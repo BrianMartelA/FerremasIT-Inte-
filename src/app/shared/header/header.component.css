@@ -1,0 +1,31 @@
+.header {
+  background-color: orange;
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 20px;
+
+
+}
+
+.button {
+  background-color: black;
+  color: white;
+  height: 79%;
+  margin-top: 2%;
+}
+
+.search {
+  height: 70%;
+  margin-top: 2%;
+  padding-left: 50%;
+}
+
+.content {
+  display: flex;
+  margin-right: 8%;
+}
+
+.navbar{
+  display: flex;
+  padding: 1px 20px;
+border-radius: 5px;}
