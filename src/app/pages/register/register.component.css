@@ -38,9 +38,18 @@ button{
   min-width: 200px; /* opcional: evita que se achiquen mucho */
 }
 
+.form-group-addres{
+  display: flex;
+  justify-items: left;
+  margin-left: 5%;
+  flex-direction: column;
+  min-width: 200px;
+}
+
 input{
     border-radius: 3px;
     border-width: 1px;
+    height: 30px;
 
 }
 h3 {
