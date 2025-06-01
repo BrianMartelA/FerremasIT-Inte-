@@ -22,14 +22,21 @@
   padding: 1vw;
   grid-template-columns: repeat(6,1fr);
   grid-template-rows: auto;
-  grid-template-areas:"hero hero hero hero aside2 aside2"
+  grid-template-areas:
+  "hero hero hero hero aside2 aside2"
     "hero hero hero hero aside2 aside2"
+    "hero hero hero hero aside3 aside3 "
     "hero hero hero hero aside3 aside3 " ;
 }
 
-.item{
-  border: 2px solid #464545;
-  border: 5px;
+
+.item {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
 }
 
 .grid .item:nth-child(1){
@@ -42,4 +49,48 @@
 
 .grid .item:nth-child(3){
   grid-area: aside3;
+}
+
+/* Carrusel container */
+.carousel {
+  width: 100%;
+  height: 100%;
+  max-width: 100%;
+  max-height: 100%;
+  display: flex;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Slides en fila */
+.slides {
+  display: flex;
+  width: 300%;
+  height: 100%;
+  animation: slideAnimation 9s infinite;
+}
+
+/* Imágenes perfectamente ajustadas al contenedor */
+.slides img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ajusta sin recortar ni deformar */
+  flex-shrink: 0;
+}
+
+
+
+.img {
+width: 100%;
+  height: 100%;
+  object-fit: contain; /* Ajusta sin recortar ni deformar */
+  flex-shrink: 0;
+}
+
+
+@keyframes slideAnimation {
+  0% { transform: translateX(0); }
+  33% { transform: translateX(-100%); }
+  66% { transform: translateX(-200%); }
+  100% { transform: translateX(0); }
 }
