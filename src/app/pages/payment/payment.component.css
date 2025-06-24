@@ -1,3 +1,9 @@
+.centrar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 .bento{
   display: grid;
   width: fit-content;
@@ -30,12 +36,6 @@
   width: 288px;
   background-color: #fff;
   border: 1px solid #999;
-}
-
-.centrar{
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .titulo{

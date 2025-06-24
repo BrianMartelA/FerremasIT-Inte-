@@ -1,3 +1,85 @@
-.grid{
-  display: grid;
+.centrar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.container-cuerpo{
+  display: flex;
+  gap: 16px;
+}
+
+.filtros{
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 32px;
+  background-color: #fff;
+  border: 1px solid #999;
+  width: 222px;
+  height: 800px;
+}
+.subtitulo{
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  font-weight:600;
+  height: 32px;
+  border-bottom: 2px solid #000000;
+}
+.filtrar-precio{
+  display: flex;
+  gap: 16px;
+}
+.price-box{
+  background-color: #fff;
+  border: 2px solid #999;
+  width: 100px;
+  height: 30px;
+}
+.categorias{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.sub-categoria{
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  font-weight:400;
+  height: 32px;
+  border-bottom: 1px solid #000000;
+}
+
+.bento{
+  display: grid;
+  gap: 16px;
+  grid-auto-rows: 1fr;
+  grid-template-columns: repeat(3, minmax(286px, 1fr));
+}
+.producto{
+  height: 388px;
+}
+.foto-producto{
+  background-color: #fff;
+  border: 1px solid #999;
+  width: 288px;
+  height: 288px;
+}
+.titulo{
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  height: 36px;
+  border-bottom: 1px solid #999;
+}
+.precio{
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  height: 36px;
+  height: 44px;
+}
+
