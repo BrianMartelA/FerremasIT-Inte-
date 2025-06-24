@@ -1,0 +1,75 @@
+.bento{
+  display: grid;
+  width: fit-content;
+  grid-template-columns: fit-content fit-content;
+  grid-template-rows: 1fr;
+  gap: 16px;
+  grid-template-areas:
+  "carrito boleta"
+  ;
+}
+
+.carrito{
+  display: flex;
+  flex-direction: column;
+  gap:16px;
+  padding: 16px;
+  height: fit-content;
+  width: 792px;
+  background-color: #fff;
+  border: 1px solid #999;
+}
+.producto{
+  border: 1px solid black;
+  height: 200px;
+}
+
+.boleta{
+  padding: 16px;
+  height: max-content;
+  width: 288px;
+  background-color: #fff;
+  border: 1px solid #999;
+}
+
+.centrar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.titulo{
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  height: 64px;
+  border-bottom: 1px solid #999;
+}
+.detalles{
+  border-bottom: 1px solid #999;
+  height: 260px;
+}
+.total{
+  display: flex;
+  align-items: center;
+  font-size: 24px;
+  height: 64px;
+  border-bottom: 1px solid #999;
+  justify-content: space-between;
+}
+
+.boton-container{
+  display: flex;
+  justify-content: center;
+}
+.boton{
+  background-color: #FEBA1B;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 16px;
+  height: 48px;
+  width: 50%;
+  font-size: large;
+}
+
