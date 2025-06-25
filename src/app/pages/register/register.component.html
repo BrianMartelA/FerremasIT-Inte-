@@ -43,23 +43,23 @@
 
       <div class="form-group-addres">
         <label for="address">Domicilio</label>
-        <input type="text" style="width: 450px; justify-items: left;" [(ngModel)]="user.address" name="address" (ngModelChange)="clearError('address')">
+        <input type="text"  [(ngModel)]="user.address" name="address" (ngModelChange)="clearError('address')">
         <div *ngIf="errorMessages['address']" class="error-text">{{ errorMessages['address'] }}</div>
       </div>
-      <br>
 
-      <div class="form-group">
-        <label for="password">Contraseña</label>
-        <input type="password" [(ngModel)]="user.password" name="password" (ngModelChange)="clearError('password')">
-        <div *ngIf="errorMessages['password']" class="error-text">{{ errorMessages['password'] }}</div>
-      </div>
+<div class="form-row">
+  <div class="form-group">
+    <label for="password">Contraseña</label>
+    <input type="password" [(ngModel)]="user.password" name="password" (ngModelChange)="clearError('password')">
+    <div *ngIf="errorMessages['password']" class="error-text">{{ errorMessages['password'] }}</div>
+  </div>
 
-      <div class="form-group">
-        <label for="conf_password">Confirmar Contraseña</label>
-        <input type="password" [(ngModel)]="user.conf_pass" name="conf_pass" (ngModelChange)="clearError('conf_pass')">
-        <div *ngIf="errorMessages['conf_pass']" class="error-text">{{ errorMessages['conf_pass'] }}</div>
-      </div>
-      <br>
+  <div class="form-group">
+    <label for="conf_password">Confirmar Contraseña</label>
+    <input type="password" [(ngModel)]="user.conf_pass" name="conf_pass" (ngModelChange)="clearError('conf_pass')">
+    <div *ngIf="errorMessages['conf_pass']" class="error-text">{{ errorMessages['conf_pass'] }}</div>
+  </div>
+</div>
 
     </form>
 

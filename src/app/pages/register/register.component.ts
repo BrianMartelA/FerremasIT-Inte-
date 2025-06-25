@@ -39,8 +39,6 @@ user: {
 };
 
 errorMessages: { [key: string]: string } = {};
-
-
 onRegister() {
   const payload = { ...this.user };
 
@@ -66,6 +64,7 @@ onRegister() {
         conf_pass:"",
         acceptedTerms:false
       }
+      this.router.navigate(['home'])
     },
     error: (err) => {
       if (err.status === 400 && err.error) {
