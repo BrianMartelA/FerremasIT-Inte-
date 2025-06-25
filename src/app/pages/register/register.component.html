@@ -7,7 +7,7 @@
 
       <div class="form-group">
         <label for="nombre">Nombre</label>
-        <input type="text" [(ngModel)]="user.first_name" name="first_name" (ngModelChange)="clearError('first_name')">
+        <input type="text" [(ngModel)]="user.first_name" name="first_name" (ngModelChange)="clearError('first_name')" (keypress)="allowOnlyLetters($event)">
         <div *ngIf="errorMessages['first_name']" class="error-text">{{ errorMessages['first_name'] }}</div>
       </div>
 
@@ -18,14 +18,14 @@
       </div>
 
       <div class="form-group">
-        <label for="pr_app">Primer apellido</label>
-        <input type="text" [(ngModel)]="user.last_name" name="last_name" (ngModelChange)="clearError('last_name')">
+        <label for="pr_app">Apellido paterno</label>
+        <input type="text" [(ngModel)]="user.last_name" name="last_name" (ngModelChange)="clearError('last_name')" (keypress)="allowOnlyLetters($event)">
         <div *ngIf="errorMessages['last_name']" class="error-text">{{ errorMessages['last_name'] }}</div>
       </div>
 
       <div class="form-group">
-        <label for="sg_app">Segundo apellido</label>
-        <input type="text" [(ngModel)]="user.second_last_name" name="second_last_name" (ngModelChange)="clearError('second_last_name')">
+        <label for="sg_app">Apellido materno</label>
+        <input type="text" [(ngModel)]="user.second_last_name" name="second_last_name" (ngModelChange)="clearError('second_last_name')"(keypress)="allowOnlyLetters($event)">
         <div *ngIf="errorMessages['second_last_name']" class="error-text">{{ errorMessages['second_last_name'] }}</div>
       </div>
 

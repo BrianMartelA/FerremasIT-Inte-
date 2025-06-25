@@ -91,5 +91,11 @@ allowOnlyNumbers(event: KeyboardEvent) {
   }
 }
 
+allowOnlyLetters(event: KeyboardEvent) {
+  const regex = /^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]$/;
+  if (!regex.test(event.key)) {
+    event.preventDefault();
+  }
+}
 
 }
