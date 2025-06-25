@@ -1,0 +1,25 @@
+.producto{
+  height: 388px;
+}
+.foto-producto{
+  background-color: #fff;
+  border: 1px solid #999;
+  width: 288px;
+  height: 288px;
+}
+.titulo{
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  height: 36px;
+  border-bottom: 1px solid #999;
+}
+.precio{
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+  padding: 8px;
+  height: 36px;
+  height: 44px;
+}

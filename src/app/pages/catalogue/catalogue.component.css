@@ -57,6 +57,7 @@
   grid-auto-rows: 1fr;
   grid-template-columns: repeat(3, minmax(286px, 1fr));
 }
+/*
 .producto{
   height: 388px;
 }
@@ -82,4 +83,5 @@
   height: 36px;
   height: 44px;
 }
+*/
 

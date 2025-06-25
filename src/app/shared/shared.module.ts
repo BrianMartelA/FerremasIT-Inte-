@@ -1,3 +1,4 @@
+import { ProductoComponent } from './producto/producto.component';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HeaderComponent } from './header/header.component';
@@ -10,8 +11,9 @@ import { FooterComponent } from './footer/footer.component';
   imports: [
     CommonModule,
     HeaderComponent,
-    FooterComponent
+    FooterComponent,
+    ProductoComponent
   ],
-  exports:[HeaderComponent,FooterComponent]
+  exports:[HeaderComponent,FooterComponent, ProductoComponent]
 })
 export class SharedModule { }
