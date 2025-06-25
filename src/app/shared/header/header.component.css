@@ -8,6 +8,8 @@
   height: 96px;
 }
 .small-header{
+  display: flex;
+  justify-content: space-between;
   background-color: #fff;
   border-bottom: 1px solid #999;
   border-radius: 5px;
@@ -73,6 +75,24 @@
   color: black;
 }
 .navbar a:hover{
+  color: #FEBA1B;
+}
+
+.navbar-end{
+  display: flex;
+  align-items: center;
+  margin-right: 122px;
+  gap: 32px;
+}
+
+.complex-a{
+  display: flex;
+  gap: 8px;
+  text-decoration: none;
+  color: black;
+}
+
+.complex-a:hover{
   color: #FEBA1B;
 }
 
