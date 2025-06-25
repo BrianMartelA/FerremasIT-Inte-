@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
 
- private baseUrl = 'http://localhost:8000/api';
+ private baseUrl = 'http://localhost:8000/api/auth';
 
   constructor(private http: HttpClient) {}
 
@@ -18,5 +18,6 @@ export class ApiService {
   register(payload: any): Observable<any> {
   return this.http.post(`${this.baseUrl}/register/`, payload);
 }
+
 
 }
