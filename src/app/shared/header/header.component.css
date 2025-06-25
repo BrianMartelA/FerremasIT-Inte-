@@ -1,10 +1,89 @@
+/*new header*/
+.contenedor-header{
+  top:0%;
+  height: 144px;
+}
+.big-header{
+  background-color: #FEBA1B;
+  height: 96px;
+}
+.small-header{
+  background-color: #fff;
+  border-bottom: 1px solid #999;
+  border-radius: 5px;
+  height: 48px;
+}
+
+.logo-buscar{
+  height: 100%;
+  margin-left: 122px;
+  margin-right: 122px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.logo{
+  display: flex;
+  gap: 8px;
+  height: 60px;
+  width: fit-content;
+}
+.ferreflex{
+  display: flex;
+  flex-direction: column;
+}
+.ferremas{
+  color: black;
+  font-size: 30px;
+  font-weight: 600;
+}
+.sub-ferremas{
+  color: black;
+  font-size: 16px;
+  font-weight: 400;
+}
+.busqueda{
+  display: flex;
+  width: 590px;
+  height: 48px
+}
+.cont-buscar{
+  width: 504px;
+  background-color: #fff;
+}
+.boton-buscar{
+  width: 86px;
+  background-color: black;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.navbar{
+  height: 100%;
+  margin-left: 122px;
+  margin-right: 122px;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.navbar a{
+  text-decoration: none;
+  color: black;
+}
+.navbar a:hover{
+  color: #FEBA1B;
+}
+
+
+/*old header
 .header {
   background-color: orange;
   display: flex;
   justify-content: space-between;
   padding: 5px 20px;
-
-
+  top: 0%;
 }
 
 .button {
@@ -28,4 +107,6 @@
 .navbar{
   display: flex;
   padding: 1px 20px;
-border-radius: 5px;}
+  border-radius: 5px;}
+
+*/
