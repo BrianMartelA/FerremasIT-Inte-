@@ -6,18 +6,19 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-
- private baseUrl = 'http://localhost:8000/api/auth';
+  private baseUrl = 'http://localhost:8000/api';
 
   constructor(private http: HttpClient) {}
 
-  getHello() {
-    return this.http.get('http://localhost:8000/api/hello/');
+  register(payload: any): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register/`, payload);
   }
 
-  register(payload: any): Observable<any> {
-  return this.http.post(`${this.baseUrl}/register/`, payload);
-}
+  getUsers() {
+    return this.http.get(`${this.baseUrl}/users/`);
+  }
 
-
+  deleteUser(userId: number) {
+    return this.http.delete(`${this.baseUrl}/users/${userId}/`);
+  }
 }
