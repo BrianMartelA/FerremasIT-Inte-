@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ApiService {
 
- private baseUrl = 'http://localhost:8000/api/auth';
+ private baseUrl = 'http://localhost:8000/api'; ///quite el /auth del final de la URL
 
   constructor(private http: HttpClient) {}
 
@@ -16,8 +16,18 @@ export class ApiService {
   }
 
   register(payload: any): Observable<any> {
-  return this.http.post(`${this.baseUrl}/register/`, payload);
-}
+  return this.http.post(`${this.baseUrl}/auth/register/`, payload); ///añadi el auth al URL
+  }
 
+   // Método para obtener todos los productos
+  getProductos(): Observable<any> {
+    // Ahora apunta a /api/productos/ correctamente
+    return this.http.get(`${this.baseUrl}/productos/`);
+  }
+
+  // Método para obtener productos por categoría
+  getProductosPorCategoria(categoria: string): Observable<any> {
+    return this.http.get(`${this.baseUrl}/productos/?categoria=${categoria}`);
+  }
 
 }

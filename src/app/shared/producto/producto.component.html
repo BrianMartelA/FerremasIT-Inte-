@@ -1,9 +1,11 @@
 <div class="producto">
   <div class="foto-producto">
-    <img [src]="imagenUrl" alt="titulo">
+    <img style="width: 288px; height: 288px;" [src]="imagenUrl" alt="titulo">
   </div>
   <div class="contenedor-titulo-precio">
-    <div class="titulo"><span>{{titulo}}</span></div>
-    <div class="precio"><span>{{precio}}</span></div>
+    <div class="contenedor-titulo-precio">
+    <div class="titulo"><span>{{ titulo }}</span></div>
+    <div class="precio"><span>${{ precio }}</span></div>
+  </div>
   </div>
 </div>

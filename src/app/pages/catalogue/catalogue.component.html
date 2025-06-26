@@ -17,39 +17,10 @@
     <div class="catalogo">
       <div class="bento">
         <app-producto
-          [imagenUrl]="'images\India_Gate_600x400.jpg'"
-          [titulo]="'Flying Ninja'"
-          [precio]="9000">
-        </app-producto>
-        <app-producto
-          [imagenUrl]="'images\India_Gate_600x400.jpg'"
-          [titulo]="'Flying Ninja'"
-          [precio]="9000">
-        </app-producto>
-        <app-producto
-          [imagenUrl]="'images\India_Gate_600x400.jpg'"
-          [titulo]="'Flying Ninja'"
-          [precio]="9000">
-        </app-producto>
-        <app-producto
-          [imagenUrl]="'images\India_Gate_600x400.jpg'"
-          [titulo]="'Flying Ninja'"
-          [precio]="9000">
-        </app-producto>
-        <app-producto
-          [imagenUrl]="'images\India_Gate_600x400.jpg'"
-          [titulo]="'Flying Ninja'"
-          [precio]="9000">
-        </app-producto>
-        <app-producto
-          [imagenUrl]="'images\India_Gate_600x400.jpg'"
-          [titulo]="'Flying Ninja'"
-          [precio]="9000">
-        </app-producto>
-        <app-producto
-          [imagenUrl]="'images\India_Gate_600x400.jpg'"
-          [titulo]="'Flying Ninja'"
-          [precio]="9000">
+          *ngFor="let producto of productos"
+          [imagenUrl]="producto.imagen"
+          [titulo]="producto.nombre"
+          [precio]="producto.precio">
         </app-producto>
       </div>
     </div>
