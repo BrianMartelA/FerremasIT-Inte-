@@ -4,6 +4,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { CatalogueComponent } from './pages/catalogue/catalogue.component';
 import { PaymentComponent } from './pages/payment/payment.component';
 import { LoginComponent } from './pages/login/login.component';
+import { UsersComponent } from './pages/users/users.component';
 
 
 export const routes: Routes = [
@@ -12,5 +13,6 @@ export const routes: Routes = [
   {path:'register',component:RegisterComponent},
   {path:'catalogue', component:CatalogueComponent},
   {path:'payment',component:PaymentComponent},
-  {path: 'login', component:LoginComponent}
+  {path: 'login', component:LoginComponent},
+  {path: 'users', component:UsersComponent}
 ];
