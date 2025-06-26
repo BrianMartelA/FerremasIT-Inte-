@@ -1,13 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../services/api.service';
 import { CommonModule } from '@angular/common'; // Importa CommonModule
-import { FormsModule } from '@angular/forms'; // Para ngModel si lo necesitas
+import { FormsModule } from '@angular/forms'; // Para ngModel si eso
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
   selector: 'app-users',
   standalone: true,
-  imports: [CommonModule, FormsModule, SharedModule], // Agrega estos imports
+  imports: [CommonModule, FormsModule, SharedModule],
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.css']
 })
