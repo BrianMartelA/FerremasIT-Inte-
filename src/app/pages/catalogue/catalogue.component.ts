@@ -1,14 +1,14 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedModule } from "../../shared/shared.module";
-import { HeaderComponent } from "../../shared/header/header.component";
 import { ProductoComponent } from '../../shared/producto/producto.component';
-import { CommonModule } from '@angular/common'; // Añade esta importación
+import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
+import { ProductoModalComponent } from '../../shared/producto-modal/producto-modal.component';
 
 @Component({
   selector: 'app-catalogue',
   standalone: true,
-  imports: [SharedModule, ProductoComponent, CommonModule],
+  imports: [SharedModule, ProductoComponent, CommonModule, ProductoModalComponent],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.css'
 })
@@ -19,6 +19,8 @@ export class CatalogueComponent implements OnInit {
   categoriaSeleccionada: string = '';
   loading: boolean = true;
   error: string | null = null;
+  mostrarModal: boolean = false;
+  productoSeleccionado: any = null;
 
   constructor(private apiService: ApiService) {}
 
@@ -74,5 +76,22 @@ export class CatalogueComponent implements OnInit {
     'CONSTRUCCION': 'Materiales de Construcción'
   };
   return nombres[codigo] || codigo;
-}
+  }
+
+  abrirModal(producto: any): void {
+    this.productoSeleccionado = producto;
+    this.mostrarModal = true;
+    document.body.style.overflow = 'hidden'; // Deshabilita el scroll
+  }
+
+  cerrarModal(): void {
+    this.mostrarModal = false;
+    document.body.style.overflow = ''; // Habilita el scroll
+  }
+
+  agregarAlCarrito(producto: any): void {
+    console.log('Producto añadido al carrito:', producto);
+    // Aquí implementarás la lógica del carrito más adelante
+    this.cerrarModal();
+  }
 }

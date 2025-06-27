@@ -45,11 +45,19 @@
           *ngFor="let producto of productosFiltrados"
           [imagenUrl]="producto.imagen"
           [titulo]="producto.nombre"
-          [precio]="producto.precio">
+          [precio]="producto.precio"
+          [producto]="producto"
+          (clickProducto)="abrirModal($event)">
         </app-producto>
       </div>
     </div>
   </div>
+  <app-producto-modal
+    [mostrar]="mostrarModal"
+    [producto]="productoSeleccionado"
+    (cerrar)="cerrarModal()"
+    (agregar)="agregarAlCarrito($event)">
+  </app-producto-modal>
 </section>
 <app-footer/>
 
