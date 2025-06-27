@@ -38,4 +38,11 @@ export class ApiService {
   deleteUser(userId: number) {
     return this.http.delete(`${this.baseUrl}/users/${userId}/`);
   }
+
+  login(email: string, password: string): Observable<any> {
+  return this.http.post(`${this.baseUrl}/auth/login/`, {
+    username: email,  // Cambiado de 'email' a 'username'
+    password
+  });
+  }
 }
