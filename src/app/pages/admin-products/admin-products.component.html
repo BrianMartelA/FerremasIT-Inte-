@@ -1,0 +1,65 @@
+<app-header />
+<div class="container">
+  <h2>Gestión de Productos</h2>
+
+  <button (click)="openCreateModal()" class="btn-add">Agregar Producto</button>
+
+  @if (isLoading) {
+    <div class="loading">Cargando productos...</div>
+  } @else {
+    <table class="product-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Categoría</th>
+          <th>Stock</th>
+          <th>Precio</th>
+          <th>Imagen</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (product of products; track product.id) {
+          <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.nombre }}</td>
+            <td>{{ product.categoria }}</td>
+            <td>{{ product.stock }}</td>
+            <!-- Corrección del pipe -->
+            <td>${{ product.precio | number:'1.0-0' }}</td>
+            <td>
+              @if (product.imagen) {
+                <img [src]="'http://localhost:8000' + product.imagen" alt="{{ product.nombre }}" class="product-image">
+              } @else {
+                <span>Sin imagen</span>
+              }
+            </td>
+            <td class="actions">
+              <button (click)="openEditModal(product)" class="btn-edit">Editar</button>
+              <button (click)="openDeleteModal(product)" class="btn-delete">Eliminar</button>
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  }
+</div>
+
+@if (showFormModal) {
+  <app-product-form
+    [product]="currentProduct"
+    [mode]="formMode"
+    (submit)="handleFormSubmit()"
+    (cancel)="closeModals()">
+  </app-product-form>
+}
+
+@if (showDeleteModal && currentProduct) {
+  <app-product-delete
+    [product]="currentProduct"
+    (confirm)="handleDeleteConfirm()"
+    (cancel)="closeModals()">
+  </app-product-delete>
+}
+<app-footer />
