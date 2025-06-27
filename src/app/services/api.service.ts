@@ -9,14 +9,16 @@ export class ApiService {
 
  private baseUrl = 'http://localhost:8000/api'; ///quite el /auth del final de la URL
 
+
   constructor(private http: HttpClient) {}
 
   getHello() {
-    return this.http.get('http://localhost:8000/api/hello/');
+    return this.http.get<{message: string}>(`${this.baseUrl}/hello/`);
   }
 
   register(payload: any): Observable<any> {
-  return this.http.post(`${this.baseUrl}/auth/register/`, payload); ///añadi el auth al URL
+
+  return this.http.post(`${this.baseUrl}/register/`, payload); ///añadi el auth al URL
   }
 
    // Método para obtener todos los productos
@@ -30,4 +32,11 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/productos/?categoria=${categoria}`);
   }
 
+  getUsers() {
+    return this.http.get(`${this.baseUrl}/users/`);
+  }
+
+  deleteUser(userId: number) {
+    return this.http.delete(`${this.baseUrl}/users/${userId}/`);
+  }
 }

@@ -6,3 +6,6 @@ body{
 .cuerpo{
   margin: 16px 24px 76px 24px;
 }
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }

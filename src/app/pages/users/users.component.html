@@ -1,1 +1,60 @@
-<p>users works!</p>
+<app-header/>
+<div class="container">
+  <h2>Gestión de Usuarios</h2>
+
+  @if (isLoading) {
+    <div class="loading">
+      <p>Cargando usuarios...</p>
+    </div>
+  } @else {
+    @if (users.length > 0) {
+      <table class="user-table">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Tipo</th>
+            <th>Nombre</th>
+            <th>RUT</th>
+            <th>Fecha Ingreso</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (user of users; track user.id) {
+            <tr>
+              <td>{{ user.id }}</td>
+              <td>{{ user.tipo_usuario }}</td>
+              <td>{{ user.nombre_completo }}</td>
+              <td>{{ user.rut }}</td>
+              <td>{{ user.fecha_ingreso }}</td>
+              <td>{{ user.email }}</td>
+              <td>{{ user.phone }}</td>
+              <td>
+                <button (click)="openDeleteDialog(user.id)" class="delete-btn">
+                  Eliminar
+                </button>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    } @else {
+      <div class="no-users">
+        No hay usuarios registrados.
+      </div>
+    }
+  }
+
+
+  <dialog #confirmDialog class="dialog">
+    <h3>Confirmar eliminación</h3>
+    <p>¿Estás seguro de eliminar este usuario?</p>
+    <div class="dialog-actions">
+      <button (click)="closeDialog()" class="cancel-btn">Cancelar</button>
+      <button (click)="confirmDelete()" class="confirm-btn">Eliminar</button>
+    </div>
+  </dialog>
+</div>
+<app-footer/>
