@@ -14,6 +14,7 @@ import { ApiService } from '../../services/api.service';
 })
 export class CatalogueComponent implements OnInit {
   productos: any[] = [];
+  productosFiltrados: any[] = [];
   categorias: string[] = ['HERRAMIENTAS', 'ELECTRICOS', 'FONTANERIA', 'CONSTRUCCION'];
   categoriaSeleccionada: string = '';
   loading: boolean = true;
@@ -29,14 +30,10 @@ export class CatalogueComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    const servicio = this.categoriaSeleccionada
-      ? this.apiService.getProductosPorCategoria(this.categoriaSeleccionada)
-      : this.apiService.getProductos();
-
-    servicio.subscribe({
+    this.apiService.getProductos().subscribe({
       next: (data: any) => {
-        console.log('Datos recibidos', data)
         this.productos = data;
+        this.aplicarFiltros();  // Aplicar filtros después de cargar
         this.loading = false;
       },
       error: (err) => {
@@ -49,12 +46,24 @@ export class CatalogueComponent implements OnInit {
 
   seleccionarCategoria(categoria: string): void {
     this.categoriaSeleccionada = categoria;
-    this.cargarProductos();
+    this.aplicarFiltros();  // Filtra los productos sin recargar la API
   }
 
   limpiarFiltros(): void {
     this.categoriaSeleccionada = '';
-    this.cargarProductos();
+    this.aplicarFiltros();
+  }
+
+  aplicarFiltros(): void {
+    if (this.categoriaSeleccionada) {
+      // Filtrado local por categoría
+      this.productosFiltrados = this.productos.filter(
+        producto => producto.categoria === this.categoriaSeleccionada
+      );
+    } else {
+      // Mostrar todos los productos
+      this.productosFiltrados = [...this.productos];
+    }
   }
 
   getNombreCategoria(codigo: string): string {
@@ -66,6 +75,4 @@ export class CatalogueComponent implements OnInit {
   };
   return nombres[codigo] || codigo;
 }
-
-
 }

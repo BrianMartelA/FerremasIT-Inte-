@@ -31,7 +31,7 @@
   display: flex;
   gap: 16px;
 }
-.price-box{
+.price-input{
   background-color: #fff;
   border: 2px solid #999;
   width: 100px;
@@ -84,3 +84,43 @@
   height: 44px;
 }
 */
+
+/* Estilos para los filtros activos */
+.sub-categoria.active {
+  background-color: #FEBA1B;
+  color: white;
+  border: 1px solid black;
+}
+
+.sub-categoria {
+  cursor: pointer;
+  transition: all 0.3s ease;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 5px;
+}
+
+.sub-categoria:hover {
+  background-color: black;
+  color: #fff;
+}
+
+/* Estilos para mensajes */
+.loading, .error, .no-results {
+  padding: 20px;
+  text-align: center;
+  font-size: 18px;
+  width: 100%;
+}
+
+.loading {
+  color: #007bff;
+}
+
+.error {
+  color: #dc3545;
+}
+
+.no-results {
+  color: #6c757d;
+}

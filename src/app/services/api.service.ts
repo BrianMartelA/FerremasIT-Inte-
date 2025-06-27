@@ -18,12 +18,11 @@ export class ApiService {
 
   register(payload: any): Observable<any> {
 
-  return this.http.post(`${this.baseUrl}/register/`, payload); ///añadi el auth al URL
+  return this.http.post(`${this.baseUrl}/register/`, payload);
   }
 
    // Método para obtener todos los productos
   getProductos(): Observable<any> {
-    // Ahora apunta a /api/productos/ correctamente
     return this.http.get(`${this.baseUrl}/productos/`);
   }
 
