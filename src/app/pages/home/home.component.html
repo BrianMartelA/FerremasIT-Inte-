@@ -2,23 +2,53 @@
 <p>Mensaje desde Django: {{ mensaje }}</p>
 
 <div class="center">
+  <!-- Loading spinner -->
+  <div *ngIf="isLoading" class="loading-container">
+    <div class="spinner"></div>
+    <p>Cargando productos...</p>
+  </div>
 
-<div class="grid">
-  <div class="item">
-  <div class="carousel">
-    <div class="slides">
-      <img src="images/India_Gate_600x400.jpg" alt="Imagen 1" >
-      <img src="images/India_Gate_600x400.jpg" alt="Imagen 2">
-      <img src="images/India_Gate_600x400.jpg" alt="Imagen 3">
+  <!-- Contenido principal -->
+<div *ngIf="!isLoading" class="grid">
+    <div class="item">
+      <div class="carousel">
+        <div class="slides">
+          <div *ngFor="let producto of productosCarousel; let i = index"
+               class="producto-container"
+               [class.active]="i === currentSlide">
+            <img [src]="producto.imagen" [alt]="producto.nombre">
+            <div class="producto-overlay">
+              <h3 class="producto-titulo">{{ producto.nombre }}</h3>
+              <span class="producto-precio">${{ producto.precio | number:'1.0-0' }}</span>
+            </div>
+          </div>
+        </div>
+        <!-- Indicadores opcionales -->
+        <div class="carousel-indicators">
+          <span *ngFor="let producto of productosCarousel; let i = index"
+                class="indicator"
+                [class.active]="i === currentSlide">
+          </span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Productos destacados -->
+    <div *ngFor="let producto of productosDestacados" class="item">
+      <div class="producto-container">
+        <img [src]="producto.imagen" [alt]="producto.nombre" class="img">
+        <div class="producto-overlay">
+          <h3 class="producto-titulo">{{ producto.nombre }}</h3>
+          <span class="producto-precio">${{ producto.precio | number:'1.0-0' }}</span>
+        </div>
+      </div>
     </div>
   </div>
-</div>
 
-  <div class="item"><img src="images/dan-cristian-padure-noOXRT9gfQ8-unsplash.jpg" alt="Imagen 1" class="img"></div>
-  <div class="item"><img src="images/dan-cristian-padure-noOXRT9gfQ8-unsplash.jpg" alt="Imagen 1" class="img"></div>
+  <!-- Mensaje si no hay productos -->
+  <div *ngIf="!isLoading && productos.length === 0" class="no-productos">
+    <p>No hay productos disponibles en este momento.</p>
+  </div>
 </div>
-
-</div>
-
 
 <app-footer></app-footer>

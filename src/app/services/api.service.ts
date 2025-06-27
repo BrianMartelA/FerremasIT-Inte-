@@ -21,4 +21,8 @@ export class ApiService {
   deleteUser(userId: number) {
     return this.http.delete(`${this.baseUrl}/users/${userId}/`);
   }
+
+   getProductos(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/productos/all/`);
+  }
 }

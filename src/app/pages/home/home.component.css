@@ -1,92 +1,175 @@
-.center{
+/* Keep your existing styles */
+.center {
     background-color: white;
-  display: flex;
-  flex-direction: column; /* Para que el título y el form estén uno encima del otro */
-  justify-content: center;
-  padding: 40px;
-  width: 85%;
-  height: 250;
-  margin: 2% auto;
-  border: 1px solid black;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-  border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 40px;
+    width: 85%;
+    height: 250;
+    margin: 2% auto;
+    border: 1px solid black;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
 }
 
-.grid{
-  background: hsl(36,100%,99%);
-  width: 100%;
-  max-width: 1500px;
-  height: 500px;
-  display: grid;
-  gap: 1.5vw;
-  padding: 1vw;
-  grid-template-columns: repeat(6,1fr);
-  grid-template-rows: auto;
-  grid-template-areas:
-  "hero hero hero hero aside2 aside2"
-    "hero hero hero hero aside2 aside2"
-    "hero hero hero hero aside3 aside3 "
-    "hero hero hero hero aside3 aside3 " ;
+.grid {
+    background: hsl(36,100%,99%);
+    width: 100%;
+    max-width: 1500px;
+    height: auto; /* Changed from fixed height to auto */
+    display: grid;
+    gap: 1.5vw;
+    padding: 1vw;
+    margin: 0 auto; /* Center the grid */
 }
 
+/* Base layout for mobile - stack everything */
+@media (max-width: 767px) {
+    .grid {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+            "hero"
+            "aside2"
+            "aside3";
+    }
 
+    /* Adjust heights for mobile */
+    .item {
+        min-height: 300px;
+    }
+}
+
+/* Tablet layout */
+@media (min-width: 768px) and (max-width: 991px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        grid-template-areas:
+            "hero hero"
+            "aside2 aside3";
+    }
+
+    /* Adjust heights for tablet */
+    .grid .item:nth-child(1) {
+        min-height: 350px;
+    }
+}
+
+/* Desktop layout - your original layout */
+@media (min-width: 992px) {
+    .grid {
+        grid-template-columns: repeat(6, 1fr);
+        grid-template-rows: auto;
+        grid-template-areas:
+            "hero hero hero hero aside2 aside2"
+            "hero hero hero hero aside2 aside2"
+            "hero hero hero hero aside3 aside3"
+            "hero hero hero hero aside3 aside3";
+        height: 500px; /* Return to your original height on desktop */
+    }
+}
+
+/* Keep the rest of your styles unchanged */
 .item {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100%;
-  width: 100%;
-  overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
 }
 
-.grid .item:nth-child(1){
-  grid-area: hero;
+.grid .item:nth-child(1) {
+    grid-area: hero;
 }
 
-.grid .item:nth-child(2){
-  grid-area: aside2;
+.grid .item:nth-child(2) {
+    grid-area: aside2;
 }
 
-.grid .item:nth-child(3){
-  grid-area: aside3;
+.grid .item:nth-child(3) {
+    grid-area: aside3;
 }
 
 /* Carrusel container */
+/* Carousel Styles - Mostrar 1 producto a la vez */
 .carousel {
-  width: 100%;
-  height: 100%;
-  max-width: 100%;
-  max-height: 100%;
-  display: flex;
-  overflow: hidden;
-  position: relative;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    border-radius: 8px;
 }
 
-/* Slides en fila */
 .slides {
-  display: flex;
-  width: 300%;
-  height: 100%;
-  animation: slideAnimation 9s infinite;
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 
-/* Imágenes perfectamente ajustadas al contenedor */
-.slides img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain; /* Ajusta sin recortar ni deformar */
-  flex-shrink: 0;
+.slides .producto-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 0.8s ease-in-out;
+    z-index: 1;
 }
 
-
-
-.img {
-width: 100%;
-  height: 100%;
-  object-fit: contain; /* Ajusta sin recortar ni deformar */
-  flex-shrink: 0;
+.slides .producto-container.active {
+    opacity: 1;
+    z-index: 2;
 }
 
+.slides .producto-container img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.slides .producto-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0,0,0,0.8));
+    color: white;
+    padding: 20px 15px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: end;
+    z-index: 3;
+}
+
+/* Indicadores del carousel */
+.carousel-indicators {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 4;
+}
+
+.indicator {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.5);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.indicator.active {
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.indicator:hover {
+    background-color: rgba(255, 255, 255, 0.8);
+}
 
 @keyframes slideAnimation {
   0% { transform: translateX(0); }
