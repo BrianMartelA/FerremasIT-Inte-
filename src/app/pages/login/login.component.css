@@ -1,0 +1,35 @@
+.centrar{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.bento{
+  display: grid;
+  width: fit-content;
+  grid-template-columns: fit-content fit-content;
+  grid-template-rows: 1fr;
+  gap: 84px;
+  grid-template-areas:
+  "login-form login-img"
+  ;
+}
+
+.login-form{
+  width: 596px;
+  height: 432px;
+  border-radius: 6px;
+  background-color: #fff;
+  border: 1px solid #999;
+  padding: 42px;
+  padding-top: 80px;
+  padding-bottom: 80px;
+}
+.login-img{
+  align-self: center;
+  width: 353px;
+  height: 353px;
+  border-radius: 999px;
+  background-color: #fff;
+  border: 1px solid #999;
+}
