@@ -31,6 +31,25 @@ export class ApiService {
   getProductosPorCategoria(categoria: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/productos/?categoria=${categoria}`);
   }
+  //ALVARO AGREGA
+  getAllProducts(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/productos/`);
+  }
+
+  // Crear producto
+  createProduct(productData: FormData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/productos/`, productData);
+  }
+
+  // Actualizar producto
+  updateProduct(id: number, productData: FormData): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/productos/${id}/`, productData);
+  }
+
+  // Eliminar producto
+  deleteProduct(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/productos/${id}/`);
+  }
 
   getUsers() {
     return this.http.get(`${this.baseUrl}/users/`);
