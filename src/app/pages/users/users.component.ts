@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ApiService } from '../../services/api.service';
-import { CommonModule } from '@angular/common'; // Importa CommonModule
-import { FormsModule } from '@angular/forms'; // Para ngModel si eso
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { SharedModule } from '../../shared/shared.module';
 
 @Component({
@@ -17,6 +17,14 @@ export class UsersComponent implements OnInit {
   isLoading = true;
   userToDelete: number | null = null;
 
+  // Variables para paginación y búsqueda
+  currentPage: number = 1;
+  itemsPerPage: number = 10;
+  totalItems: number = 0;
+  searchTerm: string = '';
+  totalPages: number = 1;
+  filledUsers: any[] = [];
+
   constructor(private apiService: ApiService) {}
 
   ngOnInit(): void {
@@ -25,9 +33,31 @@ export class UsersComponent implements OnInit {
 
   loadUsers() {
     this.isLoading = true;
-    this.apiService.getUsers().subscribe({
-      next: (data: any) => {
-        this.users = data;
+    this.apiService.getUsers(this.currentPage, this.itemsPerPage, this.searchTerm).subscribe({
+      next: (response: any) => {
+        this.users = response.results;
+        this.totalItems = response.count;
+        this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
+
+        // Crear lista de usuarios con relleno para mantener siempre 6 filas
+        this.filledUsers = [...this.users];
+        const emptySlots = 6 - this.users.length;
+
+        if (emptySlots > 0) {
+          for (let i = 0; i < emptySlots; i++) {
+            this.filledUsers.push({
+              id: null,
+              tipo_usuario: '---',
+              nombre_completo: '---',
+              rut: '---',
+              fecha_ingreso: '---',
+              email: '---',
+              phone: '---',
+              is_empty: true // Bandera para identificar filas vacías
+            });
+          }
+        }
+
         this.isLoading = false;
       },
       error: (err) => {
@@ -35,6 +65,16 @@ export class UsersComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  onSearch() {
+    this.currentPage = 1;
+    this.loadUsers();
+  }
+
+  changePage(page: number) {
+    this.currentPage = page;
+    this.loadUsers();
   }
 
   openDeleteDialog(userId: number) {
@@ -46,16 +86,15 @@ export class UsersComponent implements OnInit {
     if (this.userToDelete) {
       this.apiService.deleteUser(this.userToDelete).subscribe({
         next: () => {
-          this.users = this.users.filter(user => user.id !== this.userToDelete);
+          this.loadUsers();
           this.closeDialog();
         },
         error: (err) => {
-        console.error('Error eliminando usuario', err);
-        if (err.status === 403) {
-          alert('No tienes permiso para realizar esta acción');
-          // Opcional: redirigir al inicio
-        }
-        this.closeDialog();
+          console.error('Error eliminando usuario', err);
+          if (err.status === 403) {
+            alert('No tienes permiso para realizar esta acción');
+          }
+          this.closeDialog();
         }
       });
     }

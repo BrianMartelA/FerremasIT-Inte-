@@ -50,13 +50,20 @@ export class ApiService {
     return this.http.delete(`${this.baseUrl}/productos/${id}/`);
   }
 
-  getUsers(): Observable<any> {
+  getUsers(page: number = 1, pageSize: number = 6, search: string = ''): Observable<any> {
   const token = localStorage.getItem('token');
   const headers = new HttpHeaders({
     'Authorization': `Token ${token}`
   });
-  return this.http.get(`${this.baseUrl}/users/`, { headers });
- }
+
+  const params = {
+    page: page.toString(),
+    page_size: pageSize.toString(),
+    search: search
+  };
+
+  return this.http.get(`${this.baseUrl}/users/`, { headers, params });
+}
 
   deleteUser(userId: number): Observable<any> {
   const token = localStorage.getItem('token');
