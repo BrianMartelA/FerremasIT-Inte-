@@ -102,3 +102,66 @@
 .cancel-btn:hover {
   background-color: #5a6268;
 }
+
+.search-bar {
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.search-bar input {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid #ddd;
+  border-radius: 4px 0 0 4px;
+}
+
+.search-bar button {
+  padding: 8px 16px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 0 4px 4px 0;
+  cursor: pointer;
+}
+
+.search-bar button:hover {
+  background-color: #0056b3;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  gap: 10px;
+}
+
+.pagination button {
+  padding: 5px 10px;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.pagination button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.pagination span {
+  margin: 0 10px;
+}
+
+tr.empty-row {
+  background-color: #f9f9f9;
+  color: #999;
+}
+
+tr.empty-row:hover {
+  background-color: #f9f9f9 !important;
+}
+
+tr.empty-row td {
+  border: 1px dashed #ddd !important;
+}

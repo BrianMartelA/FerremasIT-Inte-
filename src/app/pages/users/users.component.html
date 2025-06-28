@@ -2,6 +2,15 @@
 <div class="container">
   <h2>Gestión de Usuarios</h2>
 
+  <!-- Buscador -->
+  <div class="search-bar">
+    <input type="text"
+           [(ngModel)]="searchTerm"
+           placeholder="Buscar por nombre, email, RUT o teléfono..."
+           (keyup.enter)="onSearch()">
+    <button (click)="onSearch()">Buscar</button>
+  </div>
+
   @if (isLoading) {
     <div class="loading">
       <p>Cargando usuarios...</p>
@@ -22,9 +31,9 @@
           </tr>
         </thead>
         <tbody>
-          @for (user of users; track user.id) {
-            <tr>
-              <td>{{ user.id }}</td>
+          @for (user of filledUsers; track $index) {
+            <tr [class.empty-row]="user.is_empty">
+              <td>{{ user.id || '---' }}</td>
               <td>{{ user.tipo_usuario }}</td>
               <td>{{ user.nombre_completo }}</td>
               <td>{{ user.rut }}</td>
@@ -32,21 +41,39 @@
               <td>{{ user.email }}</td>
               <td>{{ user.phone }}</td>
               <td>
-                <button (click)="openDeleteDialog(user.id)" class="delete-btn">
-                  Eliminar
-                </button>
+                @if (!user.is_empty) {
+                  <button (click)="openDeleteDialog(user.id)" class="delete-btn">
+                    Eliminar
+                  </button>
+                } @else {
+                  <button disabled class="delete-btn" style="opacity: 0.5;">Eliminar</button>
+                }
               </td>
             </tr>
           }
         </tbody>
       </table>
+
+      <!-- Paginación -->
+      <div class="pagination">
+        <button [disabled]="currentPage === 1"
+                (click)="changePage(currentPage - 1)">
+          Anterior
+        </button>
+
+        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+
+        <button [disabled]="currentPage >= totalPages"
+                (click)="changePage(currentPage + 1)">
+          Siguiente
+        </button>
+      </div>
     } @else {
       <div class="no-users">
-        No hay usuarios registrados.
+        No se encontraron usuarios.
       </div>
     }
   }
-
 
   <dialog #confirmDialog class="dialog">
     <h3>Confirmar eliminación</h3>
