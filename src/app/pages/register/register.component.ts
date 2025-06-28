@@ -53,11 +53,7 @@ onRegister() {
     this.isLoading = false;
     return;
   }
-
-  setTimeout(() => {
-     this.api.register(payload).subscribe({
-    next: (res) => {
-      this.user={
+    this.user={
         first_name:"",
         last_name:"",
         second_last_name:"",
@@ -69,6 +65,11 @@ onRegister() {
         conf_pass:"",
         acceptedTerms:false
       }
+
+  setTimeout(() => {
+     this.api.register(payload).subscribe({
+    next: (res) => {
+
       console.log('Registro exitoso', res);
       this.errorMessages = {};
 
