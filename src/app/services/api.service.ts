@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -18,12 +18,11 @@ export class ApiService {
 
   register(payload: any): Observable<any> {
 
-  return this.http.post(`${this.baseUrl}/register/`, payload); ///añadi el auth al URL
+  return this.http.post(`${this.baseUrl}/register/`, payload);
   }
 
    // Método para obtener todos los productos
   getProductos(): Observable<any> {
-    // Ahora apunta a /api/productos/ correctamente
     return this.http.get(`${this.baseUrl}/productos/`);
   }
 
@@ -51,9 +50,29 @@ export class ApiService {
     return this.http.delete(`${this.baseUrl}/productos/${id}/`);
   }
 
-  getUsers() {
-    return this.http.get(`${this.baseUrl}/users/`);
-  }
+  getUsers(): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Authorization': `Token ${token}`
+  });
+  return this.http.get(`${this.baseUrl}/users/`, { headers });
+ }
+
+  deleteUser(userId: number): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Authorization': `Token ${token}`
+  });
+  return this.http.delete(`${this.baseUrl}/users/${userId}/`, { headers });
+}
+
+
+  login(email: string, password: string): Observable<any> {
+  return this.http.post(`${this.baseUrl}/auth/login/`, {
+    username: email,  // Cambiar de 'email' a 'username'
+    password
+  });
+}
 
   deleteUser(userId: number) {
     return this.http.delete(`${this.baseUrl}/users/${userId}/`);

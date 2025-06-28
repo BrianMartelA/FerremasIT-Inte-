@@ -1,23 +1,26 @@
 import { Component, OnInit } from '@angular/core';
 import { SharedModule } from "../../shared/shared.module";
-import { HeaderComponent } from "../../shared/header/header.component";
 import { ProductoComponent } from '../../shared/producto/producto.component';
-import { CommonModule } from '@angular/common'; // Añade esta importación
+import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
+import { ProductoModalComponent } from '../../shared/producto-modal/producto-modal.component';
 
 @Component({
   selector: 'app-catalogue',
   standalone: true,
-  imports: [SharedModule, ProductoComponent, CommonModule],
+  imports: [SharedModule, ProductoComponent, CommonModule, ProductoModalComponent],
   templateUrl: './catalogue.component.html',
   styleUrl: './catalogue.component.css'
 })
 export class CatalogueComponent implements OnInit {
   productos: any[] = [];
+  productosFiltrados: any[] = [];
   categorias: string[] = ['HERRAMIENTAS', 'ELECTRICOS', 'FONTANERIA', 'CONSTRUCCION'];
   categoriaSeleccionada: string = '';
   loading: boolean = true;
   error: string | null = null;
+  mostrarModal: boolean = false;
+  productoSeleccionado: any = null;
 
   constructor(private apiService: ApiService) {}
 
@@ -29,14 +32,10 @@ export class CatalogueComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    const servicio = this.categoriaSeleccionada
-      ? this.apiService.getProductosPorCategoria(this.categoriaSeleccionada)
-      : this.apiService.getProductos();
-
-    servicio.subscribe({
+    this.apiService.getProductos().subscribe({
       next: (data: any) => {
-        console.log('Datos recibidos', data)
         this.productos = data;
+        this.aplicarFiltros();  // Aplicar filtros después de cargar
         this.loading = false;
       },
       error: (err) => {
@@ -49,12 +48,24 @@ export class CatalogueComponent implements OnInit {
 
   seleccionarCategoria(categoria: string): void {
     this.categoriaSeleccionada = categoria;
-    this.cargarProductos();
+    this.aplicarFiltros();  // Filtra los productos sin recargar la API
   }
 
   limpiarFiltros(): void {
     this.categoriaSeleccionada = '';
-    this.cargarProductos();
+    this.aplicarFiltros();
+  }
+
+  aplicarFiltros(): void {
+    if (this.categoriaSeleccionada) {
+      // Filtrado local por categoría
+      this.productosFiltrados = this.productos.filter(
+        producto => producto.categoria === this.categoriaSeleccionada
+      );
+    } else {
+      // Mostrar todos los productos
+      this.productosFiltrados = [...this.productos];
+    }
   }
 
   getNombreCategoria(codigo: string): string {
@@ -65,7 +76,22 @@ export class CatalogueComponent implements OnInit {
     'CONSTRUCCION': 'Materiales de Construcción'
   };
   return nombres[codigo] || codigo;
-}
+  }
 
+  abrirModal(producto: any): void {
+    this.productoSeleccionado = producto;
+    this.mostrarModal = true;
+    document.body.style.overflow = 'hidden'; // Deshabilita el scroll
+  }
 
+  cerrarModal(): void {
+    this.mostrarModal = false;
+    document.body.style.overflow = ''; // Habilita el scroll
+  }
+
+  agregarAlCarrito(producto: any): void {
+    console.log('Producto añadido al carrito:', producto);
+    // Aquí implementarás la lógica del carrito más adelante
+    this.cerrarModal();
+  }
 }

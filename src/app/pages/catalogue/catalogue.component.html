@@ -2,29 +2,62 @@
 <section class="cuerpo centrar">
   <div class="container-cuerpo">
     <div class="filtros">
-      <div class="subtitulo"><span>Filtrar por precio</span></div>
+      <!--
+      <div class="subtitulo"><span>Filtrar por Categoria</span></div>
       <div class="filtrar-precio">
         <div class="price-box"></div>
         <div class="price-box"></div>
       </div>
-      <div class="subtitulo"><span>Categoria</span></div>
+      -->
+      <div class="subtitulo"><span>Filtrar por Categoria</span></div>
       <div class="categorias">
-      <div class="sub-categoria"><span>Herramientas</span></div>
-      <div class="sub-categoria"><span>Materiales Eléctricos</span></div>
-      <div class="sub-categoria"><span>Fontanería</span></div>
-      <div class="sub-categoria"><span>Materiales de Contrucción</span></div>
+       <div class="sub-categoria"
+             (click)="seleccionarCategoria('HERRAMIENTAS')"
+             [class.active]="categoriaSeleccionada === 'HERRAMIENTAS'">
+          <span>Herramientas</span>
+        </div>
+        <div class="sub-categoria"
+             (click)="seleccionarCategoria('ELECTRICOS')"
+             [class.active]="categoriaSeleccionada === 'ELECTRICOS'">
+          <span>Materiales Eléctricos</span>
+        </div>
+        <div class="sub-categoria"
+             (click)="seleccionarCategoria('FONTANERIA')"
+             [class.active]="categoriaSeleccionada === 'FONTANERIA'">
+          <span>Fontanería</span>
+        </div>
+        <div class="sub-categoria"
+             (click)="seleccionarCategoria('CONSTRUCCION')"
+             [class.active]="categoriaSeleccionada === 'CONSTRUCCION'">
+          <span>Materiales de Construcción</span>
+        </div>
+        <!-- Botón para limpiar filtros -->
+        <div class="sub-categoria"
+             (click)="limpiarFiltros()"
+             [class.active]="!categoriaSeleccionada">
+          <span>Todas las categorías</span>
+        </div>
       </div>
     </div>
     <div class="catalogo">
       <div class="bento">
         <app-producto
-          *ngFor="let producto of productos"
+          *ngFor="let producto of productosFiltrados"
           [imagenUrl]="producto.imagen"
           [titulo]="producto.nombre"
-          [precio]="producto.precio">
+          [precio]="producto.precio"
+          [producto]="producto"
+          (clickProducto)="abrirModal($event)">
         </app-producto>
       </div>
     </div>
   </div>
+  <app-producto-modal
+    [mostrar]="mostrarModal"
+    [producto]="productoSeleccionado"
+    (cerrar)="cerrarModal()"
+    (agregar)="agregarAlCarrito($event)">
+  </app-producto-modal>
 </section>
 <app-footer/>
+
