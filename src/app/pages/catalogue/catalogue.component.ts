@@ -4,6 +4,7 @@ import { ProductoComponent } from '../../shared/producto/producto.component';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { ProductoModalComponent } from '../../shared/producto-modal/producto-modal.component';
+import { CarritoService } from '../../services/carrito.service';
 
 @Component({
   selector: 'app-catalogue',
@@ -22,7 +23,10 @@ export class CatalogueComponent implements OnInit {
   mostrarModal: boolean = false;
   productoSeleccionado: any = null;
 
-  constructor(private apiService: ApiService) {}
+  constructor(
+    private apiService: ApiService,
+    private carritoService: CarritoService
+  ) {}
 
   ngOnInit(): void {
     this.cargarProductos();
@@ -90,8 +94,15 @@ export class CatalogueComponent implements OnInit {
   }
 
   agregarAlCarrito(producto: any): void {
-    console.log('Producto añadido al carrito:', producto);
-    // Aquí implementarás la lógica del carrito más adelante
-    this.cerrarModal();
+    this.carritoService.agregarProducto(producto).subscribe({
+      next: (response) => {
+        console.log('Producto añadido al carrito:', response);
+        // Actualizar el carrito en toda la aplicación
+        this.carritoService.actualizarCarrito();
+      },
+      error: (err) => {
+        console.error('Error al agregar al carrito', err);
+      }
+    });
   }
 }

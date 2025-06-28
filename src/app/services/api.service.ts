@@ -59,7 +59,7 @@ export class ApiService {
     'Authorization': `Token ${token}`
   });
   return this.http.delete(`${this.baseUrl}/users/${userId}/`, { headers });
-}
+  }
 
 
   login(email: string, password: string): Observable<any> {
@@ -67,8 +67,36 @@ export class ApiService {
     username: email,  // Cambiar de 'email' a 'username'
     password
   });
-}
+  }
   getProductos(): Observable<any> {
   return this.http.get(`${this.baseUrl}/productos/`);
-}
+  }
+
+  obtenerCarrito(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.baseUrl}/carrito/`, { headers });
+  }
+
+  agregarAlCarrito(productoId: number, cantidad: number = 1): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${this.baseUrl}/carrito/agregar/`, {
+      producto_id: productoId,
+      cantidad: cantidad
+    }, { headers });
+  }
+
+  eliminarDelCarrito(itemId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete(`${this.baseUrl}/carrito/eliminar/${itemId}/`, { headers });
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return new HttpHeaders({
+        'Authorization': `Token ${token}`
+      });
+    }
+    return new HttpHeaders();
+  }
 }
