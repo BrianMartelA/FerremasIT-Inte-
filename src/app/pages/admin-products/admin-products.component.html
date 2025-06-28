@@ -1,65 +1,119 @@
 <app-header />
 <div class="container">
-  <h2>Gestión de Productos</h2>
+  <h2>Productos Registrados</h2>
 
-  <button (click)="openCreateModal()" class="btn-add">Agregar Producto</button>
+  <div class="search-bar">
+    <input type="text"
+           [(ngModel)]="searchTerm"
+           placeholder="Buscar productos..."
+           (keyup.enter)="onSearch()">
+    <button (click)="onSearch()">Buscar</button>
+    <button (click)="openCreateModal()" class="add-btn">Agregar Producto</button>
+  </div>
 
-  @if (isLoading) {
-    <div class="loading">Cargando productos...</div>
-  } @else {
-    <table class="product-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Nombre</th>
-          <th>Categoría</th>
-          <th>Stock</th>
-          <th>Precio</th>
-          <th>Imagen</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (product of products; track product.id) {
-          <tr>
-            <td>{{ product.id }}</td>
-            <td>{{ product.nombre }}</td>
-            <td>{{ product.categoria }}</td>
-            <td>{{ product.stock }}</td>
-            <!-- Corrección del pipe -->
-            <td>${{ product.precio | number:'1.0-0' }}</td>
-            <td>
-              @if (product.imagen) {
-                <img [src]="'http://localhost:8000' + product.imagen" alt="{{ product.nombre }}" class="product-image">
-              } @else {
-                <span>Sin imagen</span>
-              }
-            </td>
-            <td class="actions">
-              <button (click)="openEditModal(product)" class="btn-edit">Editar</button>
-              <button (click)="openDeleteModal(product)" class="btn-delete">Eliminar</button>
-            </td>
-          </tr>
-        }
-      </tbody>
-    </table>
-  }
+  <table class="product-table">
+    <thead>
+      <tr>
+        <th>ID Producto</th>
+        <th>Categoría</th>
+        <th>Nombre</th>
+        <th>Fecha Agregado</th>
+        <th>Stock</th>
+        <th>Editar</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let product of filledProducts" [class.empty-row]="product.is_empty">
+        <td>{{ product.id || '---' }}</td>
+        <td>{{ getCategoryLabel(product.categoria) || '---' }}</td>
+        <td>{{ product.nombre || '---' }}</td>
+        <td>{{ (product.fecha_creacion | date:'dd/MM/yyyy') || '---' }}</td>
+        <td>{{ product.stock || '---' }}</td>
+        <td>
+          <button *ngIf="!product.is_empty"
+                  (click)="openEditModal(product)"
+                  class="edit-btn">Editar</button>
+          <button *ngIf="product.is_empty" disabled>---</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="pagination">
+    <button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">Anterior</button>
+    <span>Página {{ currentPage }} de {{ totalPages }}</span>
+    <button [disabled]="currentPage >= totalPages" (click)="changePage(currentPage + 1)">Siguiente</button>
+  </div>
 </div>
 
-@if (showFormModal) {
-  <app-product-form
-    [product]="currentProduct"
-    [mode]="formMode"
-    (submit)="handleFormSubmit()"
-    (cancel)="closeModals()">
-  </app-product-form>
-}
+<!-- Modal para editar producto -->
+<div *ngIf="showEditModal" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeEditModal()">&times;</span>
+    <h3>Editar Producto</h3>
+    <form (submit)="updateProduct()">
+      <label>Nombre:</label>
+      <input type="text" [(ngModel)]="selectedProduct.nombre" name="nombre" required>
 
-@if (showDeleteModal && currentProduct) {
-  <app-product-delete
-    [product]="currentProduct"
-    (confirm)="handleDeleteConfirm()"
-    (cancel)="closeModals()">
-  </app-product-delete>
-}
+      <label>Categoría:</label>
+      <select [(ngModel)]="selectedProduct.categoria" name="categoria" required>
+        <option *ngFor="let cat of categories" [value]="cat.value">{{ cat.label }}</option>
+      </select>
+
+      <label>Stock:</label>
+      <input type="number" [(ngModel)]="selectedProduct.stock" name="stock" required>
+
+      <label>Precio:</label>
+      <input type="number" [(ngModel)]="selectedProduct.precio" name="precio" required>
+
+      <label>Descripción:</label>
+      <textarea [(ngModel)]="selectedProduct.descripcion" name="descripcion"></textarea>
+
+      <label>Imagen:</label>
+      <input type="file" (change)="onFileChange($event, false)">
+      <img *ngIf="selectedProduct.imagen && !(selectedProduct.imagen instanceof File)"
+           [src]="'http://localhost:8000' + selectedProduct.imagen"
+           height="100">
+
+      <div class="modal-actions">
+        <button type="button" (click)="closeEditModal()">Cancelar</button>
+        <button type="submit">Guardar</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Modal para crear producto -->
+<div *ngIf="showCreateModal" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeCreateModal()">&times;</span>
+    <h3>Agregar Nuevo Producto</h3>
+    <form (submit)="createProduct()">
+      <label>Nombre:</label>
+      <input type="text" [(ngModel)]="newProduct.nombre" name="nombre" required>
+
+      <label>Categoría:</label>
+      <select [(ngModel)]="newProduct.categoria" name="categoria" required>
+        <option *ngFor="let cat of categories" [value]="cat.value">{{ cat.label }}</option>
+      </select>
+
+      <label>Stock:</label>
+      <input type="number" [(ngModel)]="newProduct.stock" name="stock" required>
+
+      <label>Precio:</label>
+      <input type="number" [(ngModel)]="newProduct.precio" name="precio" required>
+
+      <label>Descripción:</label>
+      <textarea [(ngModel)]="newProduct.descripcion" name="descripcion"></textarea>
+
+      <label>Imagen:</label>
+      <input type="file" (change)="onFileChange($event)">
+
+      <div class="modal-actions">
+        <button type="button" (click)="closeCreateModal()">Cancelar</button>
+        <button type="submit">Crear</button>
+      </div>
+    </form>
+  </div>
+</div>
 <app-footer />
