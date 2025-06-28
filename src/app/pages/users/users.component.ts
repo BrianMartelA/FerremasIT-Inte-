@@ -50,8 +50,12 @@ export class UsersComponent implements OnInit {
           this.closeDialog();
         },
         error: (err) => {
-          console.error('Error eliminando usuario', err);
-          this.closeDialog();
+        console.error('Error eliminando usuario', err);
+        if (err.status === 403) {
+          alert('No tienes permiso para realizar esta acción');
+          // Opcional: redirigir al inicio
+        }
+        this.closeDialog();
         }
       });
     }

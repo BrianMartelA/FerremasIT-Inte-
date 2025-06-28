@@ -43,7 +43,10 @@ export class LoginComponent {
         next: (response) => {
           // Guardar token y datos de usuario
           localStorage.setItem('token', response.token);
-          localStorage.setItem('user', JSON.stringify(response.user));
+          localStorage.setItem('user', JSON.stringify({
+            ...response.user,
+            is_staff: response.user.is_staff // Campo que indica si es admin
+          }));
 
           // Redirigir al catálogo
           this.router.navigate(['/catalogue']);

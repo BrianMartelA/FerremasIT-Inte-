@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -31,18 +31,26 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/productos/?categoria=${categoria}`);
   }
 
-  getUsers() {
-    return this.http.get(`${this.baseUrl}/users/`);
-  }
+  getUsers(): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Authorization': `Token ${token}`
+  });
+  return this.http.get(`${this.baseUrl}/users/`, { headers });
+ }
 
-  deleteUser(userId: number) {
-    return this.http.delete(`${this.baseUrl}/users/${userId}/`);
-  }
+  deleteUser(userId: number): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Authorization': `Token ${token}`
+  });
+  return this.http.delete(`${this.baseUrl}/users/${userId}/`, { headers });
+}
 
   login(email: string, password: string): Observable<any> {
   return this.http.post(`${this.baseUrl}/auth/login/`, {
-    username: email,  // Cambiado de 'email' a 'username'
+    username: email,  // Cambiar de 'email' a 'username'
     password
   });
-  }
+}
 }

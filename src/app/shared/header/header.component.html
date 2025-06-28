@@ -20,11 +20,24 @@
     <div class="navbar">
       <a href="home">Inicio</a>
       <a href="catalogue">Catalogo</a>
-      <a href="users">Usuarios</a>
+      <a *ngIf="authService.isAdmin()" href="users">Usuarios</a>
     </div>
     <div class="navbar-end">
-      <a class="complex-a" href="login"><img style="width: 24px; height:24px;" src="images\profile-vector.png" alt=""><span>Inicia sesión</span></a>
-      <a class="complex-a" href="register"><span>Registrarse</span></a>
+      <ng-container *ngIf="authService.isAuthenticated(); else notAuthenticated">
+        <a class="complex-a" (click)="logout()" style="cursor: pointer;">
+          <img style="width: 24px; height:24px;" src="images\logout-icon.png" alt="">
+          <span>Cerrar Sesión</span>
+        </a>
+      </ng-container>
+      <ng-template #notAuthenticated>
+        <a class="complex-a" href="login">
+          <img style="width: 24px; height:24px;" src="images\profile-vector.png" alt="">
+          <span>Inicia sesión</span>
+        </a>
+        <a class="complex-a" href="register">
+          <span>Registrarse</span>
+        </a>
+      </ng-template>
     </div>
   </div>
 </header>
