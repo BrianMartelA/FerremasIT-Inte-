@@ -31,27 +31,46 @@
           </tr>
         </thead>
         <tbody>
-          @for (user of filledUsers; track $index) {
-            <tr [class.empty-row]="user.is_empty">
-              <td>{{ user.id || '---' }}</td>
-              <td>{{ user.tipo_usuario }}</td>
-              <td>{{ user.nombre_completo }}</td>
-              <td>{{ user.rut }}</td>
-              <td>{{ user.fecha_ingreso }}</td>
-              <td>{{ user.email }}</td>
-              <td>{{ user.phone }}</td>
-              <td>
-                @if (!user.is_empty) {
-                  <button (click)="openDeleteDialog(user.id)" class="delete-btn">
-                    Eliminar
-                  </button>
-                } @else {
-                  <button disabled class="delete-btn" style="opacity: 0.5;">Eliminar</button>
-                }
-              </td>
-            </tr>
-          }
-        </tbody>
+  @for (user of displayedUsers; track $index) {
+    <tr [class.empty-row]="user.is_empty">
+      <td>{{ user.id || '---' }}</td>
+      <td>{{ user.tipo_usuario }}</td>
+      <td>{{ user.nombre_completo }}</td>
+      <td>{{ user.rut }}</td>
+      <td>{{ user.fecha_ingreso }}</td>
+      <td>{{ user.email }}</td>
+      <td>{{ user.phone }}</td>
+      <td>
+         <!-- {{ currentUser?.id }} - {{ user.id }} - {{ isCurrentUser(user.id) }}
+          -->
+         @if (!user.is_empty) {
+          <div class="action-buttons">
+            <button
+              (click)="toggleAdminStatus(user.id)"
+              [disabled]="isUpdating[user.id] || isCurrentUser(user.id)"
+              class="admin-btn"
+              [class.admin]="user.tipo_usuario === 'Administrador'"
+            >
+              @if (isUpdating[user.id]) {
+                <span>Procesando...</span>
+              } @else {
+                <span>{{ user.tipo_usuario === 'Administrador' ? 'Quitar Admin' : 'Hacer Admin' }}</span>
+              }
+            </button>
+            <button (click)="openDeleteDialog(user.id)" class="delete-btn">
+              Eliminar
+            </button>
+          </div>
+        } @else {
+          <div class="action-buttons">
+            <button disabled class="admin-btn">---</button>
+            <button disabled class="delete-btn">---</button>
+          </div>
+        }
+      </td>
+    </tr>
+  }
+</tbody>
       </table>
 
       <!-- Paginación -->
