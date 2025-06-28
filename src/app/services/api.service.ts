@@ -21,11 +21,6 @@ export class ApiService {
   return this.http.post(`${this.baseUrl}/register/`, payload);
   }
 
-   // Método para obtener todos los productos
-  getProductos(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/productos/`);
-  }
-
   // Método para obtener productos por categoría
   getProductosPorCategoria(categoria: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/productos/?categoria=${categoria}`);
@@ -73,12 +68,7 @@ export class ApiService {
     password
   });
 }
-
-  deleteUser(userId: number) {
-    return this.http.delete(`${this.baseUrl}/users/${userId}/`);
-  }
-
-   getProductos(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/productos/all/`);
-  }
+  getProductos(): Observable<any> {
+  return this.http.get(`${this.baseUrl}/productos/`);
+}
 }
