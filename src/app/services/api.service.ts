@@ -32,23 +32,43 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/productos/?categoria=${categoria}`);
   }
   //ALVARO AGREGA
-  getAllProducts(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/productos/`);
-  }
+  getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Authorization': `Token ${token}`
+  });
 
-  // Crear producto
+  const params = {
+    page: page.toString(),
+    page_size: pageSize.toString(),
+    search: search
+  };
+
+  return this.http.get(`${this.baseUrl}/productos/`, { headers, params });
+}
+
   createProduct(productData: FormData): Observable<any> {
-    return this.http.post(`${this.baseUrl}/productos/`, productData);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${token}`
+    });
+    return this.http.post(`${this.baseUrl}/productos/`, productData, { headers });
   }
 
-  // Actualizar producto
   updateProduct(id: number, productData: FormData): Observable<any> {
-    return this.http.patch(`${this.baseUrl}/productos/${id}/`, productData);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${token}`
+    });
+    return this.http.patch(`${this.baseUrl}/productos/${id}/`, productData, { headers });
   }
 
-  // Eliminar producto
   deleteProduct(id: number): Observable<any> {
-    return this.http.delete(`${this.baseUrl}/productos/${id}/`);
+    const token = localStorage.getItem('token');
+    const headers = new HttpHeaders({
+      'Authorization': `Token ${token}`
+    });
+    return this.http.delete(`${this.baseUrl}/productos/${id}/`, { headers });
   }
 
   getUsers(page: number = 1, pageSize: number = 6, search: string = ''): Observable<any> {
