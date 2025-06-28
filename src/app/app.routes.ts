@@ -5,7 +5,10 @@ import { CatalogueComponent } from './pages/catalogue/catalogue.component';
 import { PaymentComponent } from './pages/payment/payment.component';
 import { LoginComponent } from './pages/login/login.component';
 import { UsersComponent } from './pages/users/users.component';
+
 import { AdminGuard, AuthGuard } from './guards/auth.guard';
+
+import { AdminProductsComponent } from './pages/admin-products/admin-products.component';
 
 
 
@@ -21,5 +24,6 @@ export const routes: Routes = [
   {path:'catalogue', component:CatalogueComponent},
   {path:'payment',component:PaymentComponent},
   {path: 'login', component:LoginComponent},
-  {path: 'users', component:UsersComponent}
+  {path: 'users', component:UsersComponent},
+  { path: 'admin/products', component: AdminProductsComponent }
 ];

@@ -42,15 +42,22 @@ user: {
 
 errorMessages: { [key: string]: string } = {};
 onRegister() {
+  this.errorMessages = {};
   this.isLoading = true;
   const payload = { ...this.user };
 
   // Validar que ambas contraseñas coincidan antes de enviar
   if (payload.password !== payload.conf_pass) {
-    alert('Las contraseñas no coinciden');
+    this.errorMessages['conf_pass'] = 'las contraseñas no coinciden'
+
+    this.isLoading = false;
     return;
   }
-this.user={
+
+  setTimeout(() => {
+     this.api.register(payload).subscribe({
+    next: (res) => {
+      this.user={
         first_name:"",
         last_name:"",
         second_last_name:"",
@@ -62,9 +69,6 @@ this.user={
         conf_pass:"",
         acceptedTerms:false
       }
-  setTimeout(() => {
-     this.api.register(payload).subscribe({
-    next: (res) => {
       console.log('Registro exitoso', res);
       this.errorMessages = {};
 

@@ -21,6 +21,9 @@
       <a href="home">Inicio</a>
       <a href="catalogue">Catalogo</a>
       <a *ngIf="authService.isAdmin()" href="users">Usuarios</a>
+
+      <a *ngIf="authService.isAdmin()" href="admin/products">Productos</a>
+
     </div>
     <div class="navbar-end">
       <ng-container *ngIf="authService.isAuthenticated(); else notAuthenticated">

@@ -30,6 +30,25 @@ export class ApiService {
   getProductosPorCategoria(categoria: string): Observable<any> {
     return this.http.get(`${this.baseUrl}/productos/?categoria=${categoria}`);
   }
+  //ALVARO AGREGA
+  getAllProducts(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/productos/`);
+  }
+
+  // Crear producto
+  createProduct(productData: FormData): Observable<any> {
+    return this.http.post(`${this.baseUrl}/productos/`, productData);
+  }
+
+  // Actualizar producto
+  updateProduct(id: number, productData: FormData): Observable<any> {
+    return this.http.patch(`${this.baseUrl}/productos/${id}/`, productData);
+  }
+
+  // Eliminar producto
+  deleteProduct(id: number): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/productos/${id}/`);
+  }
 
   getUsers(): Observable<any> {
   const token = localStorage.getItem('token');
@@ -47,10 +66,19 @@ export class ApiService {
   return this.http.delete(`${this.baseUrl}/users/${userId}/`, { headers });
 }
 
+
   login(email: string, password: string): Observable<any> {
   return this.http.post(`${this.baseUrl}/auth/login/`, {
     username: email,  // Cambiar de 'email' a 'username'
     password
   });
 }
+
+  deleteUser(userId: number) {
+    return this.http.delete(`${this.baseUrl}/users/${userId}/`);
+  }
+
+   getProductos(): Observable<any> {
+    return this.http.get(`${this.baseUrl}/productos/all/`);
+  }
 }
