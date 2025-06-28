@@ -12,7 +12,6 @@ import { SharedModule } from '../../shared/shared.module';
   styleUrls: ['./admin-products.component.css']
 })
 export class AdminProductsComponent implements OnInit {
-  URL = window.URL || window.webkitURL;
   products: any[] = [];
   currentPage = 1;
   itemsPerPage = 6;
@@ -25,7 +24,9 @@ export class AdminProductsComponent implements OnInit {
   // Variables para modales
   showEditModal = false;
   showCreateModal = false;
+  showDeleteModal = false;
   selectedProduct: any = null;
+  productToDelete: any = null;
   newProduct: any = {
     nombre: '',
     categoria: '',
@@ -34,6 +35,9 @@ export class AdminProductsComponent implements OnInit {
     descripcion: '',
     imagen: null
   };
+
+  // Para previsualización de imágenes
+  URL = window.URL || window.webkitURL;
 
   // Categorías para el select
   categories = [
@@ -49,21 +53,16 @@ export class AdminProductsComponent implements OnInit {
     this.loadProducts();
   }
 
-  isImageString(image: any): boolean {
-  return typeof image === 'string';
-  }
   loadProducts() {
     this.isLoading = true;
     this.apiService.getProducts(this.currentPage, this.itemsPerPage, this.searchTerm).subscribe({
       next: (response: any) => {
-        // Verificar si la respuesta es paginada o un array simple
-        if (Array.isArray(response)) {
+        if (response.results) {
+          this.products = response.results;
+          this.totalItems = response.count;
+        } else {
           this.products = response;
           this.totalItems = response.length;
-        } else {
-          // Asumir estructura paginada
-          this.products = response.results || [];
-          this.totalItems = response.count || this.products.length;
         }
 
         this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
@@ -124,6 +123,28 @@ export class AdminProductsComponent implements OnInit {
     this.resetNewProduct();
   }
 
+  openDeleteModal(product: any) {
+    this.productToDelete = product;
+    this.showDeleteModal = true;
+  }
+
+  confirmDelete() {
+    if (this.productToDelete) {
+      this.apiService.deleteProduct(this.productToDelete.id).subscribe({
+        next: () => {
+          this.loadProducts();
+          this.closeDeleteModal();
+        },
+        error: (err) => console.error('Error eliminando producto', err)
+      });
+    }
+  }
+
+  closeDeleteModal() {
+    this.showDeleteModal = false;
+    this.productToDelete = null;
+  }
+
   resetNewProduct() {
     this.newProduct = {
       nombre: '',
@@ -150,8 +171,8 @@ export class AdminProductsComponent implements OnInit {
     const formData = new FormData();
     formData.append('nombre', this.newProduct.nombre);
     formData.append('categoria', this.newProduct.categoria);
-    formData.append('stock', this.newProduct.stock);
-    formData.append('precio', this.newProduct.precio);
+    formData.append('stock', this.newProduct.stock.toString());
+    formData.append('precio', this.newProduct.precio.toString());
     formData.append('descripcion', this.newProduct.descripcion);
     if (this.newProduct.imagen) {
       formData.append('imagen', this.newProduct.imagen);
@@ -170,8 +191,8 @@ export class AdminProductsComponent implements OnInit {
     const formData = new FormData();
     formData.append('nombre', this.selectedProduct.nombre);
     formData.append('categoria', this.selectedProduct.categoria);
-    formData.append('stock', this.selectedProduct.stock);
-    formData.append('precio', this.selectedProduct.precio);
+    formData.append('stock', this.selectedProduct.stock.toString());
+    formData.append('precio', this.selectedProduct.precio.toString());
     formData.append('descripcion', this.selectedProduct.descripcion);
     if (this.selectedProduct.imagen instanceof File) {
       formData.append('imagen', this.selectedProduct.imagen);
@@ -186,17 +207,6 @@ export class AdminProductsComponent implements OnInit {
     });
   }
 
-  deleteProduct(id: number) {
-    if (confirm('¿Estás seguro de eliminar este producto?')) {
-      this.apiService.deleteProduct(id).subscribe({
-        next: () => {
-          this.loadProducts();
-        },
-        error: (err) => console.error('Error eliminando producto', err)
-      });
-    }
-  }
-
   getCategoryLabel(value: string): string {
     const category = this.categories.find(cat => cat.value === value);
     return category ? category.label : value;
@@ -204,5 +214,9 @@ export class AdminProductsComponent implements OnInit {
 
   getImageUrl(imagePath: string): string {
     return `http://localhost:8000${imagePath}`;
+  }
+
+  isImageString(image: any): boolean {
+    return typeof image === 'string';
   }
 }

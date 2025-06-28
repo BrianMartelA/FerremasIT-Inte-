@@ -42,7 +42,7 @@
                 @if (!product.is_empty) {
                   <div class="action-buttons">
                     <button (click)="openEditModal(product)" class="edit-btn">Editar</button>
-                    <button (click)="deleteProduct(product.id)" class="delete-btn">Eliminar</button>
+                    <button (click)="openDeleteModal(product)" class="delete-btn">Eliminar</button>
                   </div>
                 } @else {
                   <div class="action-buttons">
@@ -74,7 +74,7 @@
     <div class="modal-content">
       <span class="close" (click)="closeEditModal()">&times;</span>
       <h3>Editar Producto</h3>
-      <form (submit)="updateProduct()">
+      <form (ngSubmit)="updateProduct()">
         <label>Nombre:</label>
         <input type="text" [(ngModel)]="selectedProduct.nombre" name="nombre" required>
 
@@ -120,7 +120,7 @@
     <div class="modal-content">
       <span class="close" (click)="closeCreateModal()">&times;</span>
       <h3>Agregar Nuevo Producto</h3>
-      <form (submit)="createProduct()">
+      <form (ngSubmit)="createProduct()">
         <label>Nombre:</label>
         <input type="text" [(ngModel)]="newProduct.nombre" name="nombre" required>
 
@@ -152,6 +152,21 @@
           <button type="submit">Crear</button>
         </div>
       </form>
+    </div>
+  </div>
+}
+
+<!-- Modal de confirmación para eliminar -->
+@if (showDeleteModal) {
+  <div class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closeDeleteModal()">&times;</span>
+      <h3>Confirmar eliminación</h3>
+      <p>¿Estás seguro de eliminar el producto "{{ productToDelete.nombre }}"?</p>
+      <div class="modal-actions">
+        <button type="button" (click)="closeDeleteModal()">Cancelar</button>
+        <button type="button" (click)="confirmDelete()" class="delete-btn">Eliminar</button>
+      </div>
     </div>
   </div>
 }
