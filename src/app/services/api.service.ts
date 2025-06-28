@@ -23,8 +23,8 @@ export class ApiService {
   }
 
    // Método para obtener todos los productos
-  getProductos(): Observable<any> {
-    return this.http.get(`${this.baseUrl}/productos/`);
+  getAllProducts(): Observable<any> {
+  return this.http.get(`${this.baseUrl}/productos/all/`);
   }
 
   // Método para obtener productos por categoría
@@ -32,7 +32,7 @@ export class ApiService {
     return this.http.get(`${this.baseUrl}/productos/?categoria=${categoria}`);
   }
   //ALVARO AGREGA
-  getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observable<any> {
+getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observable<any> {
   const token = localStorage.getItem('token');
   const headers = new HttpHeaders({
     'Authorization': `Token ${token}`

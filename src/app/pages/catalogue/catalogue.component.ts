@@ -32,7 +32,7 @@ export class CatalogueComponent implements OnInit {
     this.loading = true;
     this.error = null;
 
-    this.apiService.getProductos().subscribe({
+    this.apiService.getAllProducts().subscribe({
       next: (data: any) => {
         this.productos = data;
         this.aplicarFiltros();  // Aplicar filtros después de cargar
