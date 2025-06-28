@@ -11,109 +11,148 @@
     <button (click)="openCreateModal()" class="add-btn">Agregar Producto</button>
   </div>
 
-  <table class="product-table">
-    <thead>
-      <tr>
-        <th>ID Producto</th>
-        <th>Categoría</th>
-        <th>Nombre</th>
-        <th>Fecha Agregado</th>
-        <th>Stock</th>
-        <th>Editar</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let product of filledProducts" [class.empty-row]="product.is_empty">
-        <td>{{ product.id || '---' }}</td>
-        <td>{{ getCategoryLabel(product.categoria) || '---' }}</td>
-        <td>{{ product.nombre || '---' }}</td>
-        <td>{{ (product.fecha_creacion | date:'dd/MM/yyyy') || '---' }}</td>
-        <td>{{ product.stock || '---' }}</td>
-        <td>
-          <button *ngIf="!product.is_empty"
-                  (click)="openEditModal(product)"
-                  class="edit-btn">Editar</button>
-          <button *ngIf="product.is_empty" disabled>---</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
+  @if (isLoading) {
+    <div class="loading">
+      <p>Cargando productos...</p>
+    </div>
+  } @else {
+    @if (products.length > 0) {
+      <table class="product-table">
+        <thead>
+          <tr>
+            <th>ID Producto</th>
+            <th>Categoría</th>
+            <th>Nombre</th>
+            <th>Fecha Agregado</th>
+            <th>Stock</th>
+            <th>Precio</th>
+            <th>Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (product of filledProducts; track $index) {
+            <tr [class.empty-row]="product.is_empty">
+              <td>{{ product.id || '---' }}</td>
+              <td>{{ getCategoryLabel(product.categoria) || '---' }}</td>
+              <td>{{ product.nombre || '---' }}</td>
+              <td>{{ (product.fecha_creacion | date:'dd/MM/yyyy') || '---' }}</td>
+              <td>{{ product.stock || '---' }}</td>
+              <td>{{ product.precio ? '$' + product.precio : '---' }}</td>
+              <td>
+                @if (!product.is_empty) {
+                  <div class="action-buttons">
+                    <button (click)="openEditModal(product)" class="edit-btn">Editar</button>
+                    <button (click)="deleteProduct(product.id)" class="delete-btn">Eliminar</button>
+                  </div>
+                } @else {
+                  <div class="action-buttons">
+                    <button disabled>---</button>
+                  </div>
+                }
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
 
-  <div class="pagination">
-    <button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">Anterior</button>
-    <span>Página {{ currentPage }} de {{ totalPages }}</span>
-    <button [disabled]="currentPage >= totalPages" (click)="changePage(currentPage + 1)">Siguiente</button>
-  </div>
+      <div class="pagination">
+        <button [disabled]="currentPage === 1" (click)="changePage(currentPage - 1)">Anterior</button>
+        <span>Página {{ currentPage }} de {{ totalPages }}</span>
+        <button [disabled]="currentPage >= totalPages" (click)="changePage(currentPage + 1)">Siguiente</button>
+      </div>
+    } @else {
+      <div class="no-products">
+        No se encontraron productos.
+      </div>
+    }
+  }
 </div>
 
 <!-- Modal para editar producto -->
-<div *ngIf="showEditModal" class="modal">
-  <div class="modal-content">
-    <span class="close" (click)="closeEditModal()">&times;</span>
-    <h3>Editar Producto</h3>
-    <form (submit)="updateProduct()">
-      <label>Nombre:</label>
-      <input type="text" [(ngModel)]="selectedProduct.nombre" name="nombre" required>
+@if (showEditModal) {
+  <div class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closeEditModal()">&times;</span>
+      <h3>Editar Producto</h3>
+      <form (submit)="updateProduct()">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="selectedProduct.nombre" name="nombre" required>
 
-      <label>Categoría:</label>
-      <select [(ngModel)]="selectedProduct.categoria" name="categoria" required>
-        <option *ngFor="let cat of categories" [value]="cat.value">{{ cat.label }}</option>
-      </select>
+        <label>Categoría:</label>
+        <select [(ngModel)]="selectedProduct.categoria" name="categoria" required>
+          <option *ngFor="let cat of categories" [value]="cat.value">{{ cat.label }}</option>
+        </select>
 
-      <label>Stock:</label>
-      <input type="number" [(ngModel)]="selectedProduct.stock" name="stock" required>
+        <label>Stock:</label>
+        <input type="number" [(ngModel)]="selectedProduct.stock" name="stock" required min="0">
 
-      <label>Precio:</label>
-      <input type="number" [(ngModel)]="selectedProduct.precio" name="precio" required>
+        <label>Precio:</label>
+        <input type="number" [(ngModel)]="selectedProduct.precio" name="precio" required min="0" step="0.01">
 
-      <label>Descripción:</label>
-      <textarea [(ngModel)]="selectedProduct.descripcion" name="descripcion"></textarea>
+        <label>Descripción:</label>
+        <textarea [(ngModel)]="selectedProduct.descripcion" name="descripcion"></textarea>
 
-      <label>Imagen:</label>
-      <input type="file" (change)="onFileChange($event, false)">
-      <img *ngIf="selectedProduct.imagen && !(selectedProduct.imagen instanceof File)"
-           [src]="'http://localhost:8000' + selectedProduct.imagen"
-           height="100">
+        <label>Imagen:</label>
+        <input type="file" (change)="onFileChange($event, false)" accept="image/*">
 
-      <div class="modal-actions">
-        <button type="button" (click)="closeEditModal()">Cancelar</button>
-        <button type="submit">Guardar</button>
-      </div>
-    </form>
+        @if (selectedProduct.imagen) {
+          <div class="image-preview">
+            @if (isImageString(selectedProduct.imagen)) {
+              <img [src]="getImageUrl(selectedProduct.imagen)" alt="Preview">
+            } @else {
+              <img [src]="URL.createObjectURL(selectedProduct.imagen)" alt="Preview">
+            }
+          </div>
+        }
+
+        <div class="modal-actions">
+          <button type="button" (click)="closeEditModal()">Cancelar</button>
+          <button type="submit">Guardar</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+}
 
 <!-- Modal para crear producto -->
-<div *ngIf="showCreateModal" class="modal">
-  <div class="modal-content">
-    <span class="close" (click)="closeCreateModal()">&times;</span>
-    <h3>Agregar Nuevo Producto</h3>
-    <form (submit)="createProduct()">
-      <label>Nombre:</label>
-      <input type="text" [(ngModel)]="newProduct.nombre" name="nombre" required>
+@if (showCreateModal) {
+  <div class="modal">
+    <div class="modal-content">
+      <span class="close" (click)="closeCreateModal()">&times;</span>
+      <h3>Agregar Nuevo Producto</h3>
+      <form (submit)="createProduct()">
+        <label>Nombre:</label>
+        <input type="text" [(ngModel)]="newProduct.nombre" name="nombre" required>
 
-      <label>Categoría:</label>
-      <select [(ngModel)]="newProduct.categoria" name="categoria" required>
-        <option *ngFor="let cat of categories" [value]="cat.value">{{ cat.label }}</option>
-      </select>
+        <label>Categoría:</label>
+        <select [(ngModel)]="newProduct.categoria" name="categoria" required>
+          <option *ngFor="let cat of categories" [value]="cat.value">{{ cat.label }}</option>
+        </select>
 
-      <label>Stock:</label>
-      <input type="number" [(ngModel)]="newProduct.stock" name="stock" required>
+        <label>Stock:</label>
+        <input type="number" [(ngModel)]="newProduct.stock" name="stock" required min="0">
 
-      <label>Precio:</label>
-      <input type="number" [(ngModel)]="newProduct.precio" name="precio" required>
+        <label>Precio:</label>
+        <input type="number" [(ngModel)]="newProduct.precio" name="precio" required min="0" step="0.01">
 
-      <label>Descripción:</label>
-      <textarea [(ngModel)]="newProduct.descripcion" name="descripcion"></textarea>
+        <label>Descripción:</label>
+        <textarea [(ngModel)]="newProduct.descripcion" name="descripcion"></textarea>
 
-      <label>Imagen:</label>
-      <input type="file" (change)="onFileChange($event)">
+        <label>Imagen:</label>
+        <input type="file" (change)="onFileChange($event)" accept="image/*" required>
 
-      <div class="modal-actions">
-        <button type="button" (click)="closeCreateModal()">Cancelar</button>
-        <button type="submit">Crear</button>
-      </div>
-    </form>
+        @if (newProduct.imagen) {
+          <div class="image-preview">
+            <img [src]="URL.createObjectURL(newProduct.imagen)" alt="Preview">
+          </div>
+        }
+
+        <div class="modal-actions">
+          <button type="button" (click)="closeCreateModal()">Cancelar</button>
+          <button type="submit">Crear</button>
+        </div>
+      </form>
+    </div>
   </div>
-</div>
+}
 <app-footer />

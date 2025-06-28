@@ -33,19 +33,19 @@ export class ApiService {
   }
   //ALVARO AGREGA
   getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observable<any> {
-    const token = localStorage.getItem('token');
-    const headers = new HttpHeaders({
-      'Authorization': `Token ${token}`
-    });
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Authorization': `Token ${token}`
+  });
 
-    const params = {
-      page: page.toString(),
-      page_size: pageSize.toString(),
-      search: search
-    };
+  const params = {
+    page: page.toString(),
+    page_size: pageSize.toString(),
+    search: search
+  };
 
-    return this.http.get(`${this.baseUrl}/productos/`, { headers, params });
-  }
+  return this.http.get(`${this.baseUrl}/productos/`, { headers, params });
+}
 
   createProduct(productData: FormData): Observable<any> {
     const token = localStorage.getItem('token');

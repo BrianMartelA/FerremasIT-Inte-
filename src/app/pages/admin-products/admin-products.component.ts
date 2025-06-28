@@ -1,15 +1,18 @@
-import { SharedModule } from '../../shared/shared.module';
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from '../../services/api.service';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { SharedModule } from '../../shared/shared.module';
 
 @Component({
   selector: 'app-admin-products',
   standalone: true,
-  imports: [SharedModule],
+  imports: [CommonModule, FormsModule, SharedModule],
   templateUrl: './admin-products.component.html',
   styleUrls: ['./admin-products.component.css']
 })
 export class AdminProductsComponent implements OnInit {
+  URL = window.URL || window.webkitURL;
   products: any[] = [];
   currentPage = 1;
   itemsPerPage = 6;
@@ -17,6 +20,7 @@ export class AdminProductsComponent implements OnInit {
   searchTerm = '';
   totalPages = 1;
   filledProducts: any[] = [];
+  isLoading = true;
 
   // Variables para modales
   showEditModal = false;
@@ -45,15 +49,31 @@ export class AdminProductsComponent implements OnInit {
     this.loadProducts();
   }
 
+  isImageString(image: any): boolean {
+  return typeof image === 'string';
+  }
   loadProducts() {
+    this.isLoading = true;
     this.apiService.getProducts(this.currentPage, this.itemsPerPage, this.searchTerm).subscribe({
       next: (response: any) => {
-        this.products = response.results || response; // Depende de tu estructura de respuesta
-        this.totalItems = response.count || this.products.length;
+        // Verificar si la respuesta es paginada o un array simple
+        if (Array.isArray(response)) {
+          this.products = response;
+          this.totalItems = response.length;
+        } else {
+          // Asumir estructura paginada
+          this.products = response.results || [];
+          this.totalItems = response.count || this.products.length;
+        }
+
         this.totalPages = Math.ceil(this.totalItems / this.itemsPerPage);
         this.updateFilledProducts();
+        this.isLoading = false;
       },
-      error: (err) => console.error('Error cargando productos', err)
+      error: (err) => {
+        console.error('Error cargando productos', err);
+        this.isLoading = false;
+      }
     });
   }
 
@@ -68,6 +88,7 @@ export class AdminProductsComponent implements OnInit {
           categoria: '---',
           fecha_creacion: '---',
           stock: '---',
+          precio: '---',
           is_empty: true
         });
       }
@@ -91,6 +112,7 @@ export class AdminProductsComponent implements OnInit {
 
   closeEditModal() {
     this.showEditModal = false;
+    this.selectedProduct = null;
   }
 
   openCreateModal() {
@@ -176,7 +198,11 @@ export class AdminProductsComponent implements OnInit {
   }
 
   getCategoryLabel(value: string): string {
-  const category = this.categories.find(cat => cat.value === value);
-  return category ? category.label : value;
+    const category = this.categories.find(cat => cat.value === value);
+    return category ? category.label : value;
+  }
+
+  getImageUrl(imagePath: string): string {
+    return `http://localhost:8000${imagePath}`;
   }
 }
