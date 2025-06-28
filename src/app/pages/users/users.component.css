@@ -30,6 +30,34 @@
   background-color: #f1f1f1;
 }
 
+.action-buttons {
+  display: flex;
+  gap: 8px;
+}
+
+.admin-btn {
+  background-color: #4CAF50; /* Verde para hacer admin */
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.admin-btn.admin {
+  background-color: #f57c00; /* Naranja para quitar admin */
+}
+
+.admin-btn:hover {
+  opacity: 0.9;
+}
+
+.admin-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .delete-btn {
   background-color: #ff4444;
   color: white;

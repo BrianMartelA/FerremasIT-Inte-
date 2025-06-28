@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -73,11 +74,38 @@ export class ApiService {
   return this.http.delete(`${this.baseUrl}/users/${userId}/`, { headers });
 }
 
+  toggleAdminStatus(userId: number): Observable<any> {
+  const token = localStorage.getItem('token');
+  const headers = new HttpHeaders({
+    'Authorization': `Token ${token}`
+  });
+  return this.http.patch(`${this.baseUrl}/users/${userId}/toggle-admin/`, {}, { headers });
+}
+
 
   login(email: string, password: string): Observable<any> {
   return this.http.post(`${this.baseUrl}/auth/login/`, {
-    username: email,  // Cambiar de 'email' a 'username'
+    username: email,
     password
-  });
+  }).pipe(
+    tap((response: any) => {
+      // Guardar token
+      localStorage.setItem('token', response.token);
+
+      // Guardar usuario actual
+      if (response.user) {
+        localStorage.setItem('currentUser', JSON.stringify(response.user));
+      } else {
+        // Si el backend no devuelve el objeto user completo
+        // Intentar construir un objeto mínimo con la información disponible
+        const userData = {
+          id: response.user_id || response.id || null,
+          email: email,
+          is_staff: response.is_staff || false
+        };
+        localStorage.setItem('currentUser', JSON.stringify(userData));
+      }
+    })
+  );
 }
 }
