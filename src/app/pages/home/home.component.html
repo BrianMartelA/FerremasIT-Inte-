@@ -15,7 +15,7 @@
           <div *ngFor="let producto of productosCarousel; let i = index"
                class="producto-container"
                [class.active]="i === currentSlide">
-            <img [src]="producto.imagen" [alt]="producto.nombre">
+            <img [src]="producto.imagen_url" [alt]="producto.nombre">
             <div class="producto-overlay">
               <h3 class="producto-titulo">{{ producto.nombre }}</h3>
               <span class="producto-precio">${{ producto.precio | number:'1.0-0' }}</span>
@@ -35,7 +35,7 @@
     <!-- Productos destacados -->
     <div *ngFor="let producto of productosDestacados" class="item">
       <div class="producto-container">
-        <img [src]="producto.imagen" [alt]="producto.nombre" class="img">
+        <img [src]="producto.imagen_url" [alt]="producto.nombre" class="img">
         <div class="producto-overlay">
           <h3 class="producto-titulo">{{ producto.nombre }}</h3>
           <span class="producto-precio">${{ producto.precio | number:'1.0-0' }}</span>

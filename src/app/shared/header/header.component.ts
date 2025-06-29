@@ -7,7 +7,7 @@ import { CarritoService } from '../../services/carrito.service';
 @Component({
   selector: 'app-header',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule,],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
