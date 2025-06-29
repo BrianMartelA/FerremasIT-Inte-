@@ -39,7 +39,8 @@
         </div>
       </div>
     </div>
-    <div class="catalogo">
+    <div class="cata_pag">
+      <div class="catalogo">
 
       <div class="bento">
         <!-- Spinner de carga -->
@@ -66,6 +67,28 @@
           [producto]="producto"
           (clickProducto)="abrirModal($event)">
         </app-producto>
+      </div>
+    </div>
+      <div *ngIf="!loading && totalPages > 1" class="pagination">
+        <button (click)="cambiarPagina(1)" [disabled]="currentPage === 1">
+          &laquo; Primera
+        </button>
+
+        <button (click)="cambiarPagina(currentPage - 1)" [disabled]="currentPage === 1">
+          &lsaquo; Anterior
+        </button>
+
+        <span class="page-info">
+          Página {{ currentPage }} de {{ totalPages }}
+        </span>
+
+        <button (click)="cambiarPagina(currentPage + 1)" [disabled]="currentPage === totalPages">
+          Siguiente &rsaquo;
+        </button>
+
+        <button (click)="cambiarPagina(totalPages)" [disabled]="currentPage === totalPages">
+          Última &raquo;
+        </button>
       </div>
     </div>
   </div>

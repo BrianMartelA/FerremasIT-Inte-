@@ -5,7 +5,7 @@
 }
 
 .container-cuerpo{
-  display: flex;
+  display:flex;
   gap: 16px;
 }
 
@@ -17,7 +17,7 @@
   background-color: #fff;
   border: 1px solid #999;
   width: 260px;
-  height: 800px;
+  height: 1224px;
 }
 .subtitulo{
   display: flex;
@@ -182,4 +182,42 @@
 
 .warning-icon {
   font-size: 24px;
+}
+
+/* Estilos para paginación */
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.pagination button {
+  padding: 8px 15px;
+  background-color: #FEBA1B;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 14px;
+}
+
+.pagination button:hover:not([disabled]) {
+  background-color: black;
+}
+
+.pagination button[disabled] {
+  background-color: #bdc3c7;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.page-info {
+  padding: 8px 15px;
+  background-color: #f8f9fa;
+  border-radius: 4px;
+  font-weight: 500;
 }

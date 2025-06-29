@@ -164,8 +164,12 @@ getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observ
     return new HttpHeaders();
   }
 
-  searchProducts(query: string): Observable<any> {
-  const params = { q: query };
+  searchProducts(query: string, page: number = 1, pageSize: number = 9): Observable<any> {
+  const params = {
+    q: query,
+    page: page.toString(),
+    page_size: pageSize.toString()
+  };
   return this.http.get(`${this.baseUrl}/productos/search/`, { params }).pipe(
     catchError(error => {
       // Manejar errores específicos
@@ -178,5 +182,23 @@ getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observ
       return throwError(() => new Error(errorMessage));
     })
   );
-}
+  }
+
+  getPaginatedProducts(page: number = 1, pageSize: number = 9): Observable<any> {
+  const params = {
+    page: page.toString(),
+    page_size: pageSize.toString()
+  };
+  return this.http.get(`${this.baseUrl}/productos/paginados/`, { params });
+  }
+
+  getProductsByCategory(category: string, page: number = 1, pageSize: number = 9): Observable<any> {
+  const params = {
+    categoria: category,
+    page: page.toString(),
+    page_size: pageSize.toString()
+  };
+  return this.http.get(`${this.baseUrl}/productos/por-categoria/`, { params });
+  }
+
 }

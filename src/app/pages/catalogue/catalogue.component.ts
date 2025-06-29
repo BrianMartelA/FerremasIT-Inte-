@@ -24,6 +24,11 @@ export class CatalogueComponent implements OnInit {
   mostrarModal: boolean = false;
   productoSeleccionado: any = null;
   searchTerm: string = '';
+  currentPage: number = 1;
+  pageSize: number = 9;
+  totalProducts: number = 0;
+  totalPages: number = 0;
+
 
   constructor(
     private apiService: ApiService,
@@ -36,23 +41,30 @@ export class CatalogueComponent implements OnInit {
     this.cargarProductos();
     this.route.queryParams.subscribe(params => {
       this.searchTerm = params['search'] || '';
+      this.categoriaSeleccionada = params['categoria'] || '';
+      this.currentPage = +params['page'] || 1;
 
       if (this.searchTerm) {
-        this.buscarProductos(this.searchTerm);
+        this.buscarProductos(this.searchTerm, this.currentPage);
+      } else if (this.categoriaSeleccionada) {
+        this.cargarProductosPorCategoria(this.categoriaSeleccionada, this.currentPage);
       } else {
-        this.cargarProductos();
+        this.cargarProductos(this.currentPage);
       }
     });
   }
 
-  cargarProductos(): void {
+  cargarProductos(page: number = 1): void {  // Añadir parámetro opcional
     this.loading = true;
     this.error = null;
 
-    this.apiService.getAllProducts().subscribe({
-      next: (data: any) => {
-        this.productos = data;
-        this.aplicarFiltros();  // Aplicar filtros después de cargar
+    // Usar el nuevo método paginado
+    this.apiService.getPaginatedProducts(page, this.pageSize).subscribe({
+      next: (response: any) => {
+        this.productos = response.results;
+        this.totalProducts = response.count;
+        this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
+        this.productosFiltrados = [...this.productos];
         this.loading = false;
       },
       error: (err) => {
@@ -62,13 +74,16 @@ export class CatalogueComponent implements OnInit {
       }
     });
   }
-   buscarProductos(termino: string): void {
+
+  buscarProductos(termino: string, page: number = 1): void {  // Añadir parámetro opcional
     this.loading = true;
     this.error = null;
 
-    this.apiService.searchProducts(termino).subscribe({
-      next: (data: any) => {
-        this.productos = data;
+    this.apiService.searchProducts(termino, page, this.pageSize).subscribe({
+      next: (response: any) => {  // Usar 'response' en minúsculas
+        this.productos = response.results;
+        this.totalProducts = response.count;
+        this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
         this.productosFiltrados = [...this.productos];
         this.loading = false;
       },
@@ -80,17 +95,67 @@ export class CatalogueComponent implements OnInit {
     });
   }
 
+  cambiarPagina(page: number): void {
+    if (page >= 1 && page <= this.totalPages) {
+      this.currentPage = page;
+
+      // Actualizar URL con todos los parámetros relevantes
+      this.router.navigate([], {
+        relativeTo: this.route,
+        queryParams: {
+          search: this.searchTerm,
+          categoria: this.categoriaSeleccionada,
+          page: this.currentPage
+        },
+        queryParamsHandling: 'merge'
+      });
+
+      // Scroll suave al inicio
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+
   seleccionarCategoria(categoria: string): void {
-    this.categoriaSeleccionada = categoria;
-    this.aplicarFiltros();  // Filtra los productos sin recargar la API
+    // Al seleccionar categoría, reiniciar a página 1
+    this.router.navigate(['/catalogue'], {
+      queryParams: {
+        categoria: categoria,
+        page: 1
+      }
+    });
+  }
+
+  cargarProductosPorCategoria(categoria: string, page: number = 1): void {
+    this.loading = true;
+    this.apiService.getProductsByCategory(categoria, page, this.pageSize).subscribe({
+      next: (response: any) => {
+        this.productos = response.results;
+        this.totalProducts = response.count;
+        this.totalPages = Math.ceil(this.totalProducts / this.pageSize);
+        this.productosFiltrados = [...this.productos];
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error al cargar productos por categoría:', err);
+        this.error = 'Error al cargar productos. Intente nuevamente.';
+        this.loading = false;
+      }
+    });
   }
 
   limpiarFiltros(): void {
     this.categoriaSeleccionada = '';
-    this.aplicarFiltros();
-    this.router.navigate(['/catalogue']);
+    // Al limpiar filtros, reiniciar a página 1
+    this.router.navigate(['/catalogue'], {
+      queryParams: {
+        categoria: null,
+        page: 1
+      },
+      queryParamsHandling: 'merge'
+    });
   }
 
+  /*
   aplicarFiltros(): void {
     if (this.categoriaSeleccionada) {
       // Filtrado local por categoría
@@ -102,6 +167,7 @@ export class CatalogueComponent implements OnInit {
       this.productosFiltrados = [...this.productos];
     }
   }
+  */
 
   getNombreCategoria(codigo: string): string {
   const nombres: {[key: string]: string} = {
