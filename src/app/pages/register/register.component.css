@@ -123,3 +123,194 @@ h3 {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
 }
+/* Mantén todos tus estilos existentes y añade estos ajustes responsive */
+
+/* Estilos base (mantén los que ya tienes) */
+.content {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  background-color: #f5f5f5;
+}
+
+.form-position {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Mantén todos tus estilos de formulario existentes... */
+/* Solo añade estos ajustes responsive: */
+
+/* Tablet - Vista intermedia */
+@media (max-width: 768px) {
+  .form-position {
+    padding: 30px 20px;
+    margin: 10px;
+    max-width: 90%;
+  }
+
+  .form-title {
+    font-size: 1.75rem;
+    margin-bottom: 25px;
+  }
+
+  /* Mantener form-row en tablet pero con menos gap */
+  .form-row {
+    gap: 15px;
+  }
+
+  /* Ajustar inputs en tablet */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"] {
+    padding: 10px 14px;
+  }
+}
+
+/* Mobile - Cambios principales aquí */
+@media (max-width: 480px) {
+  .content {
+    padding: 10px;
+    align-items: flex-start;
+    padding-top: 20px;
+  }
+
+  .form-position {
+    padding: 20px 15px;
+    margin: 5px;
+    border-radius: 8px;
+    max-width: 95%;
+  }
+
+  .form-title {
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+  }
+
+  /* CLAVE: Cambiar form-row a columna en móvil */
+  .form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  /* Ajustar form-group para móvil */
+  .form-group,
+  .form-group-addres {
+    width: 100%;
+  }
+
+  /* Inputs más pequeños en móvil */
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"] {
+    padding: 10px 12px;
+    font-size: 0.95rem;
+  }
+
+  /* Labels más pequeños */
+  label {
+    font-size: 0.85rem;
+  }
+
+  /* Botón ajustado */
+  button {
+    padding: 12px 20px !important;
+    font-size: 0.95rem !important;
+    width: 100%;
+    border-radius: 8px !important;
+  }
+
+  /* Checkbox container ajustado */
+  div[style*="display: flex"] {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 8px;
+  }
+
+  /* Checkbox más legible */
+  input[type="checkbox"] {
+    transform: scale(1.1);
+    margin-right: 8px;
+  }
+
+  /* Labels de checkbox más pequeños */
+  label[for="policies"],
+  label[for="acceptedTerms"] {
+    font-size: 0.8rem !important;
+    line-height: 1.3;
+  }
+
+  /* Ajustar spinner si existe */
+  .spinner-container {
+    padding: 15px;
+  }
+
+  .spinner {
+    width: 30px;
+    height: 30px;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+  .form-position {
+    padding: 15px 10px;
+  }
+
+  .form-title {
+    font-size: 1.3rem;
+  }
+
+  input[type="text"],
+  input[type="email"],
+  input[type="tel"],
+  input[type="password"] {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+
+  label {
+    font-size: 0.8rem;
+  }
+
+  button {
+    padding: 10px 16px !important;
+    font-size: 0.9rem !important;
+  }
+}
+
+/* Mejoras adicionales para mejor UX móvil */
+@media (max-width: 480px) {
+  /* Espaciado entre grupos de formulario */
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group-addres {
+    margin-bottom: 15px;
+  }
+
+  /* Error messages más legibles */
+  .error-text {
+    font-size: 0.8rem;
+    margin-top: 5px;
+  }
+
+  /* Mejorar área de enlaces */
+  a {
+    touch-target: manipulation;
+    min-height: 44px;
+    display: inline-block;
+    line-height: 44px;
+  }
+}

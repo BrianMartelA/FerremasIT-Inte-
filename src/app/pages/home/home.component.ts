@@ -48,7 +48,7 @@ startCarousel() {
   }
 
   cargarProductos() {
-    this.api.getProductos().subscribe({
+    this.api.getAllProducts().subscribe({
       next: (data) => {
         this.productos = data;
         // Separar productos para carousel (primeros 3) y destacados (siguientes 2)

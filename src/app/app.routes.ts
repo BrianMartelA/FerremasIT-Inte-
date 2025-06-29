@@ -25,5 +25,7 @@ export const routes: Routes = [
   {path:'payment',component:PaymentComponent},
   {path: 'login', component:LoginComponent},
   {path: 'users', component:UsersComponent},
-  { path: 'admin/products', component: AdminProductsComponent }
+  { path: 'admin/products',
+    component: AdminProductsComponent,
+    canActivate: [AuthGuard, AdminGuard] }
 ];
