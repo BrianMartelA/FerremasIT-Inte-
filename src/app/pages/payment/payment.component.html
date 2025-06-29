@@ -44,6 +44,7 @@
         <span>${{ total | number }}</span>
       </div>
       <div class="boton-container">
+        <!-- Componente PayPal -->
         <ngx-paypal *ngIf="showPaypalButtons" [config]="payPalConfig"></ngx-paypal>
       </div>
     </div>

@@ -4,6 +4,7 @@ import { CarritoService } from '../../services/carrito.service';
 import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { NgxPayPalModule } from 'ngx-paypal';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-payment',
@@ -22,7 +23,8 @@ export class PaymentComponent implements OnInit {
 
   constructor(
     private apiService: ApiService,
-    private carritoService: CarritoService
+    private carritoService: CarritoService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -50,6 +52,12 @@ export class PaymentComponent implements OnInit {
   }
 
   initPaypalConfig() {
+    this.showPaypalButtons = false;
+    const token = localStorage.getItem('token');
+    if (!token) {
+      this.router.navigate(['/login']);
+      return;
+    }
     this.apiService.createPayPalPayment().subscribe({
       next: (res: any) => {
         this.payPalConfig = {
@@ -77,9 +85,19 @@ export class PaymentComponent implements OnInit {
         this.showPaypalButtons = true;
       },
       error: (err) => {
+      if (err.status === 401 || err.status === 403) {
+        // Token inválido, redirigir a login
+        localStorage.removeItem('token');
+        localStorage.removeItem('currentUser');
+        this.router.navigate(['/login']);
+      } else {
         console.error('Error creando pago:', err);
       }
-    });
+    }
+  });
+    setTimeout(() => {
+    this.showPaypalButtons = true;
+    }, 1000);
   }
 }
 
