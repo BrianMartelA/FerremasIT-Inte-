@@ -16,7 +16,7 @@
   padding: 32px;
   background-color: #fff;
   border: 1px solid #999;
-  width: 222px;
+  width: 260px;
   height: 800px;
 }
 .subtitulo{
@@ -55,7 +55,7 @@
   display: grid;
   gap: 16px;
   grid-auto-rows: 1fr;
-  grid-template-columns: repeat(3, minmax(286px, 1fr));
+  grid-template-columns: repeat(3, 286px);
 }
 /*
 .producto{
@@ -123,4 +123,63 @@
 
 .no-results {
   color: #6c757d;
+}
+/* Spinner de carga */
+.spinner-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 300px;
+  gap: 20px;
+}
+
+.spinner {
+  width: 50px;
+  height: 50px;
+  border: 5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: #3498db;
+  animation: spin 1s ease-in-out infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Mensaje sin resultados */
+.no-results {
+  text-align: center;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  margin-top: 20px;
+}
+
+.no-results img {
+  width: 100px;
+  opacity: 0.7;
+  margin-bottom: 20px;
+}
+
+.no-results h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.no-results p {
+  color: #777;
+}
+
+.error-message {
+  background-color: #ffebee;
+  border-left: 4px solid #f44336;
+  margin: 20px 0;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.warning-icon {
+  font-size: 24px;
 }

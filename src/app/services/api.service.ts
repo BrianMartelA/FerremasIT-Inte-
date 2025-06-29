@@ -1,7 +1,8 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -162,4 +163,20 @@ getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observ
     }
     return new HttpHeaders();
   }
+
+  searchProducts(query: string): Observable<any> {
+  const params = { q: query };
+  return this.http.get(`${this.baseUrl}/productos/search/`, { params }).pipe(
+    catchError(error => {
+      // Manejar errores específicos
+      let errorMessage = 'Error desconocido';
+      if (error.status === 404) {
+        errorMessage = 'No se encontraron productos';
+      } else if (error.status >= 500) {
+        errorMessage = 'Error del servidor. Intente más tarde';
+      }
+      return throwError(() => new Error(errorMessage));
+    })
+  );
+}
 }

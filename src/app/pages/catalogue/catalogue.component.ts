@@ -5,6 +5,7 @@ import { CommonModule } from '@angular/common';
 import { ApiService } from '../../services/api.service';
 import { ProductoModalComponent } from '../../shared/producto-modal/producto-modal.component';
 import { CarritoService } from '../../services/carrito.service';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-catalogue',
@@ -22,14 +23,26 @@ export class CatalogueComponent implements OnInit {
   error: string | null = null;
   mostrarModal: boolean = false;
   productoSeleccionado: any = null;
+  searchTerm: string = '';
 
   constructor(
     private apiService: ApiService,
-    private carritoService: CarritoService
+    private carritoService: CarritoService,
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
     this.cargarProductos();
+    this.route.queryParams.subscribe(params => {
+      this.searchTerm = params['search'] || '';
+
+      if (this.searchTerm) {
+        this.buscarProductos(this.searchTerm);
+      } else {
+        this.cargarProductos();
+      }
+    });
   }
 
   cargarProductos(): void {
@@ -49,6 +62,23 @@ export class CatalogueComponent implements OnInit {
       }
     });
   }
+   buscarProductos(termino: string): void {
+    this.loading = true;
+    this.error = null;
+
+    this.apiService.searchProducts(termino).subscribe({
+      next: (data: any) => {
+        this.productos = data;
+        this.productosFiltrados = [...this.productos];
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Error en búsqueda:', err);
+        this.error = 'Error al buscar productos. Intenta nuevamente.';
+        this.loading = false;
+      }
+    });
+  }
 
   seleccionarCategoria(categoria: string): void {
     this.categoriaSeleccionada = categoria;
@@ -58,6 +88,7 @@ export class CatalogueComponent implements OnInit {
   limpiarFiltros(): void {
     this.categoriaSeleccionada = '';
     this.aplicarFiltros();
+    this.router.navigate(['/catalogue']);
   }
 
   aplicarFiltros(): void {
@@ -104,5 +135,8 @@ export class CatalogueComponent implements OnInit {
         console.error('Error al agregar al carrito', err);
       }
     });
+  }
+  mostrarError(): boolean {
+    return !!this.error && !this.loading;
   }
 }
