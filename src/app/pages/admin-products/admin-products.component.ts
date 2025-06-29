@@ -188,24 +188,29 @@ export class AdminProductsComponent implements OnInit {
   }
 
   updateProduct() {
-    const formData = new FormData();
-    formData.append('nombre', this.selectedProduct.nombre);
-    formData.append('categoria', this.selectedProduct.categoria);
-    formData.append('stock', this.selectedProduct.stock.toString());
-    formData.append('precio', this.selectedProduct.precio.toString());
-    formData.append('descripcion', this.selectedProduct.descripcion);
-    if (this.selectedProduct.imagen instanceof File) {
-      formData.append('imagen', this.selectedProduct.imagen);
-    }
+  const formData = new FormData();
+  formData.append('nombre', this.selectedProduct.nombre);
+  formData.append('categoria', this.selectedProduct.categoria);
+  formData.append('stock', this.selectedProduct.stock.toString());
+  formData.append('precio', this.selectedProduct.precio.toString());
+  formData.append('descripcion', this.selectedProduct.descripcion);
 
-    this.apiService.updateProduct(this.selectedProduct.id, formData).subscribe({
-      next: () => {
-        this.closeEditModal();
-        this.loadProducts();
-      },
-      error: (err) => console.error('Error actualizando producto', err)
-    });
+  // Manejar imagen solo si se proporciona una nueva
+  if (this.selectedProduct.imagen instanceof File) {
+    formData.append('imagen', this.selectedProduct.imagen);
+  } else if (this.selectedProduct.imagen === null) {
+    // Si se eliminó la imagen existente
+    formData.append('imagen', '');
   }
+
+  this.apiService.updateProduct(this.selectedProduct.id, formData).subscribe({
+    next: () => {
+      this.closeEditModal();
+      this.loadProducts();
+    },
+    error: (err) => console.error('Error actualizando producto', err)
+  });
+}
 
   getCategoryLabel(value: string): string {
     const category = this.categories.find(cat => cat.value === value);

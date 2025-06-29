@@ -1,5 +1,5 @@
 <app-header />
-<div class="container">
+<div class="container cuerpo">
   <h2>Productos Registrados</h2>
 
   <div class="search-bar">
@@ -98,7 +98,7 @@
         @if (selectedProduct.imagen) {
           <div class="image-preview">
             @if (isImageString(selectedProduct.imagen)) {
-              <img [src]="getImageUrl(selectedProduct.imagen)" alt="Preview">
+              <img [src]="selectedProduct.imagen" alt="Preview">
             } @else {
               <img [src]="URL.createObjectURL(selectedProduct.imagen)" alt="Preview">
             }

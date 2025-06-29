@@ -8,8 +8,10 @@
 
     <div class="modal-info">
       <h2>{{producto?.nombre}}</h2>
-      <p class="descripcion">{{producto?.descripcion || 'Sin descripción disponible'}}</p>
-
+      <div class="descripcion-container">
+        <h3>Descripción</h3>
+        <p class="descripcion">{{producto?.descripcion || 'Sin descripción disponible'}}</p>
+      </div>
       <div class="detalles">
         <p><strong>Precio:</strong> {{producto?.precio }}</p>
         <p><strong>Stock:</strong> {{producto?.stock}} unidades disponibles</p>
