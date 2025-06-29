@@ -8,9 +8,7 @@ import { throwError } from 'rxjs';
   providedIn: 'root'
 })
 export class ApiService {
-
- private baseUrl = 'http://localhost:8000/api'; ///quite el /auth del final de la URL
-
+  private baseUrl = 'http://localhost:8000/api'; ///quite el /auth del final de la URL
 
   constructor(private http: HttpClient) {}
 
@@ -201,4 +199,8 @@ getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observ
   return this.http.get(`${this.baseUrl}/productos/por-categoria/`, { params });
   }
 
+  createPayPalPayment() {
+  // Usar baseUrl en lugar de apiUrl
+  return this.http.post(`${this.baseUrl}/create-paypal-payment/`, {});
+}
 }

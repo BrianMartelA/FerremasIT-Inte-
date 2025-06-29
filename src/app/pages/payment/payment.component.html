@@ -44,9 +44,7 @@
         <span>${{ total | number }}</span>
       </div>
       <div class="boton-container">
-        <button class="boton" [disabled]="carrito.length === 0">
-          <span>Pagar</span>
-        </button>
+        <ngx-paypal *ngIf="showPaypalButtons" [config]="payPalConfig"></ngx-paypal>
       </div>
     </div>
   </div>

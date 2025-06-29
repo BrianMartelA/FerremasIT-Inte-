@@ -2,11 +2,13 @@ import { Component, OnInit } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { CarritoService } from '../../services/carrito.service';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../../services/api.service';
+import { NgxPayPalModule } from 'ngx-paypal';
 
 @Component({
   selector: 'app-payment',
   standalone: true,
-  imports: [SharedModule, CommonModule],
+  imports: [SharedModule, CommonModule, NgxPayPalModule],
   templateUrl: './payment.component.html',
   styleUrl: './payment.component.css'
 })
@@ -15,9 +17,16 @@ export class PaymentComponent implements OnInit {
   total: number = 0;
   loading: boolean = true;
 
-  constructor(private carritoService: CarritoService) {}
+  payPalConfig: any;
+  showPaypalButtons = false;
+
+  constructor(
+    private apiService: ApiService,
+    private carritoService: CarritoService
+  ) {}
 
   ngOnInit(): void {
+    this.initPaypalConfig();
     this.carritoService.carrito$.subscribe(items => {
       this.carrito = items;
       this.total = this.calcularTotal();
@@ -39,4 +48,38 @@ export class PaymentComponent implements OnInit {
       }
     });
   }
+
+  initPaypalConfig() {
+    this.apiService.createPayPalPayment().subscribe({
+      next: (res: any) => {
+        this.payPalConfig = {
+          clientId: 'sb', // Usar 'sb' para sandbox
+          createOrder: (data: any, actions: any) => {
+            return actions.order.create({
+              purchase_units: [{
+                amount: {
+                  value: (this.total / 800).toFixed(2), // Convertir CLP a USD
+                  currency_code: 'USD'
+                }
+              }]
+            });
+          },
+          onApprove: (data: any, actions: any) => {
+            return actions.order.capture().then((details: any) => {
+              alert('Pago exitoso: ' + details.payer.name.given_name);
+              // Guardar orden en base de datos
+            });
+          },
+          onError: (err: any) => {
+            console.error('Error en pago PayPal:', err);
+          }
+        };
+        this.showPaypalButtons = true;
+      },
+      error: (err) => {
+        console.error('Error creando pago:', err);
+      }
+    });
+  }
 }
+
