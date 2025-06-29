@@ -1,0 +1,35 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Cambiar Email</h3>
+      <button class="close-btn" (click)="onClose()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="errorMessages.non_field_errors" class="error-message">
+        {{ errorMessages.non_field_errors }}
+      </div>
+      <form [formGroup]="accountForm" (ngSubmit)="onSave()">
+        <div class="form-group">
+          <label>Nuevo Email</label>
+          <input type="email" formControlName="email">
+          <div *ngIf="accountForm.get('email').invalid && accountForm.get('email').touched"
+               class="error-text">
+            Por favor ingresa un email válido
+          </div>
+        </div>
+
+        <div *ngIf="successMessage" class="success-message">
+          {{ successMessage }}
+        </div>
+
+        <div *ngIf="errorMessages.email" class="error-message">
+          {{ errorMessages.email }}
+        </div>
+
+        <button type="submit" [disabled]="accountForm.invalid || isLoading">
+          {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

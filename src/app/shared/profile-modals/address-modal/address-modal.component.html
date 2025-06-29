@@ -1,0 +1,35 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Cambiar Dirección</h3>
+      <button class="close-btn" (click)="onClose()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="errorMessages.non_field_errors" class="error-message">
+        {{ errorMessages.non_field_errors }}
+      </div>
+      <form [formGroup]="addressForm" (ngSubmit)="onSave()">
+        <div class="form-group">
+          <label>Nueva Dirección</label>
+          <textarea formControlName="address" rows="3"></textarea>
+          <div *ngIf="addressForm.get('address').invalid && addressForm.get('address').touched"
+               class="error-text">
+            Por favor ingresa una dirección válida
+          </div>
+        </div>
+
+        <div *ngIf="successMessage" class="success-message">
+          {{ successMessage }}
+        </div>
+
+        <div *ngIf="errorMessages.address" class="error-message">
+          {{ errorMessages.address }}
+        </div>
+
+        <button type="submit" [disabled]="addressForm.invalid || isLoading">
+          {{ isLoading ? 'Guardando...' : 'Guardar Cambios' }}
+        </button>
+      </form>
+    </div>
+  </div>
+</div>

@@ -162,6 +162,7 @@ getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observ
     return new HttpHeaders();
   }
 
+
   searchProducts(query: string, page: number = 1, pageSize: number = 9): Observable<any> {
   const params = {
     q: query,
@@ -198,4 +199,27 @@ getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observ
   };
   return this.http.get(`${this.baseUrl}/productos/por-categoria/`, { params });
   }
+
+getCurrentUser(): Observable<any> {
+  const headers = this.getAuthHeaders();
+  return this.http.get<any>(`${this.baseUrl}/user/me/`, { headers });
 }
+
+//updateUser(userData: any): Observable<any> {
+//  const headers = this.getAuthHeaders();
+  // Usar PATCH para actualización parcial
+//  return this.http.patch(`${this.baseUrl}/user/me/`, userData, { headers });
+//}
+
+updateUser(userData: any): Observable<any> {
+  const headers = this.getAuthHeaders();
+  return this.http.patch(`${this.baseUrl}/user/me/`, userData, { headers });
+}
+
+changePassword(passwordData: any): Observable<any> {
+  const headers = this.getAuthHeaders();
+  return this.http.post(`${this.baseUrl}/user/change_password/`, passwordData, { headers });
+}
+
+}
+
