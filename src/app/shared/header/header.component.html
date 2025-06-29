@@ -27,8 +27,14 @@
     </div>
     <div class="navbar-end">
       <ng-container *ngIf="authService.isAuthenticated(); else notAuthenticated">
+        <a class="complex-a" style="cursor: pointer;" href="payment">
+          <img style="width: 32px; height:32px;" src="images\shopping_cart_60dp_000_FILL0_wght400_GRAD0_opsz48.png" alt="">
+          <span *ngIf="contadorCarrito > 0" class="contador-carrito">
+            {{ contadorCarrito }}
+          </span>
+        </a>
         <a class="complex-a" (click)="logout()" style="cursor: pointer;">
-          <img style="width: 24px; height:24px;" src="images\logout-icon.png" alt="">
+          <img style="width: 24px; height:24px;" src="images\logout.png" alt="">
           <span>Cerrar Sesión</span>
         </a>
       </ng-container>

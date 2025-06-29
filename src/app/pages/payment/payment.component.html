@@ -5,22 +5,48 @@
       <div class="titulo">
         <span>Tu Carrito</span>
       </div>
-      <div class="producto"></div>
-      <div class="producto"></div>
+
+      <div *ngIf="loading" class="loading">
+        <p>Cargando carrito...</p>
+      </div>
+
+      <div *ngIf="!loading && carrito.length === 0" class="empty-cart">
+        <p>Tu carrito está vacío</p>
+      </div>
+
+      <div *ngFor="let item of carrito" class="producto-item">
+        <img [src]="item.producto.imagen_url" [alt]="item.producto.nombre">
+        <div class="producto-info">
+          <div class="producto-subinfo">
+            <h3>{{ item.producto.nombre }}</h3>
+            <p>Cantidad: {{ item.cantidad }}</p>
+          </div>
+          <div class="producto-subinfo">
+            <h4>${{ item.producto.precio * item.cantidad | number }}</h4>
+            <button (click)="eliminarItem(item.id)" class="boton-eliminar">Eliminar</button>
+          </div>
+        </div>
+      </div>
+
     </div>
     <div class="boleta">
       <div class="titulo">
         <span>Detalles compra</span>
       </div>
-      <div class="detalles"></div>
+      <div class="detalles">
+        <div *ngFor="let item of carrito" class="detalle-item">
+          <span>{{ item.producto.nombre }} x{{ item.cantidad }}</span>
+          <span>${{ item.producto.precio * item.cantidad | number }}</span>
+        </div>
+      </div>
       <div class="total">
         <span>Total:</span>
-        <span>$36.000</span>
+        <span>${{ total | number }}</span>
       </div>
       <div class="boton-container">
-        <div class="boton">
+        <button class="boton" [disabled]="carrito.length === 0">
           <span>Pagar</span>
-        </div>
+        </button>
       </div>
     </div>
   </div>

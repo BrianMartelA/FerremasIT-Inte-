@@ -96,6 +96,20 @@
   color: #FEBA1B;
 }
 
+.contador-carrito {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 16px;
+  width: 16px;
+  background-color: orange;
+  color: white;
+  border-radius: 50%;
+  font-size: 12px;
+  position: relative;
+  top: -6px;
+  right: 10px;
+}
 
 /*old header
 .header {

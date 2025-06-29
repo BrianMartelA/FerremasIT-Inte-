@@ -22,7 +22,7 @@ export class ApiService {
   return this.http.post(`${this.baseUrl}/register/`, payload);
   }
 
-   // Método para obtener todos los productos
+  // Método para obtener todos los productos
   getAllProducts(): Observable<any> {
   return this.http.get(`${this.baseUrl}/productos/all/`);
   }
@@ -92,7 +92,7 @@ getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observ
     'Authorization': `Token ${token}`
   });
   return this.http.delete(`${this.baseUrl}/users/${userId}/`, { headers });
-}
+  }
 
   toggleAdminStatus(userId: number): Observable<any> {
   const token = localStorage.getItem('token');
@@ -128,4 +128,38 @@ getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observ
     })
   );
 }
+
+  /*
+  getProductos(): Observable<any> {
+  return this.http.get(`${this.baseUrl}/productos/`);
+  }
+  */
+
+  obtenerCarrito(): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.get(`${this.baseUrl}/carrito/`, { headers });
+  }
+
+  agregarAlCarrito(productoId: number, cantidad: number = 1): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.post(`${this.baseUrl}/carrito/agregar/`, {
+      producto_id: productoId,
+      cantidad: cantidad
+    }, { headers });
+  }
+
+  eliminarDelCarrito(itemId: number): Observable<any> {
+    const headers = this.getAuthHeaders();
+    return this.http.delete(`${this.baseUrl}/carrito/eliminar/${itemId}/`, { headers });
+  }
+
+  private getAuthHeaders(): HttpHeaders {
+    const token = localStorage.getItem('token');
+    if (token) {
+      return new HttpHeaders({
+        'Authorization': `Token ${token}`
+      });
+    }
+    return new HttpHeaders();
+  }
 }

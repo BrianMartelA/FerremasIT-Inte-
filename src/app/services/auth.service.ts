@@ -1,11 +1,28 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { ApiService } from './api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
-  constructor(private router: Router) {}
+  constructor(
+    private router: Router,
+    private apiService: ApiService
+  ) {}
+
+  login(email: string, password: string): Observable<any> {
+  return this.apiService.login(email, password).pipe(
+    tap(response => {
+      // Guardar token en localStorage
+      localStorage.setItem('token', response.token);
+
+      // Guardar información del usuario si es necesario
+      localStorage.setItem('user', JSON.stringify(response.user));
+    })
+  );
+}
 
   isAuthenticated(): boolean {
     return !!localStorage.getItem('token');
@@ -26,5 +43,6 @@ export class AuthService {
     localStorage.removeItem('user');
     this.router.navigate(['/login']);
   }
+
 }
 

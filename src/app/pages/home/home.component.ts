@@ -7,7 +7,7 @@ import { ProductoComponent } from '../../shared/producto/producto.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [SharedModule,CommonModule,ProductoComponent],
+  imports: [SharedModule,CommonModule],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'
 })
@@ -63,6 +63,4 @@ startCarousel() {
       }
     });
   }
-
-
 }
