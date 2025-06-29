@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { Routes } from '@angular/router';
 import { HomeComponent } from './pages/home/home.component';
 import { RegisterComponent } from './pages/register/register.component';
@@ -9,6 +10,7 @@ import { UsersComponent } from './pages/users/users.component';
 import { AdminGuard, AuthGuard } from './guards/auth.guard';
 
 import { AdminProductsComponent } from './pages/admin-products/admin-products.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 
 
@@ -18,7 +20,6 @@ export const routes: Routes = [
     component: UsersComponent,
     canActivate: [AuthGuard, AdminGuard] // Doble protección
   },
-  {path:'',redirectTo:'home', pathMatch:'full'},
   {path:'home', component:HomeComponent},
   {path:'register',component:RegisterComponent},
   {path:'catalogue', component:CatalogueComponent},
@@ -27,5 +28,7 @@ export const routes: Routes = [
   {path: 'users', component:UsersComponent},
   { path: 'admin/products',
     component: AdminProductsComponent,
-    canActivate: [AuthGuard, AdminGuard] }
+    canActivate: [AuthGuard, AdminGuard] },
+  {path:'profile', component:ProfileComponent},
+  {path:'',redirectTo:'home', pathMatch:'full'},
 ];

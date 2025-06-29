@@ -1,1 +1,56 @@
-<p>profile works!</p>
+<app-header></app-header>
+
+<div class="profile-container">
+  <h2>Perfil de Usuario</h2>
+
+  <div class="profile-card" (click)="openModal('personal')">
+    <h3>Información Personal</h3>
+     <p>Nombre: {{ user?.nombre_completo }}</p>
+    <p>RUT: {{user?.rut}}</p>
+    <p>Teléfono: {{user?.phone}}</p>
+  </div>
+
+  <div class="profile-card" (click)="openModal('account')">
+    <h3>Datos de tu Cuenta</h3>
+    <p>Email: {{user?.email}}</p>
+  </div>
+
+  <div class="profile-card" (click)="openModal('security')">
+    <h3>Seguridad</h3>
+    <p>Cambiar contraseña</p>
+  </div>
+
+  <div class="profile-card" (click)="openModal('address')">
+    <h3>Direcciones</h3>
+    <p>Domicilio: {{user?.address}}</p>
+  </div>
+</div>
+
+<!-- Modales con manejo de actualización -->
+<app-personal-info-modal
+  *ngIf="showPersonalModal"
+  [user]="user"
+  (close)="closeModal('personal')"
+  (userUpdated)="handleUserUpdated($event)">
+</app-personal-info-modal>
+
+<app-account-modal
+  *ngIf="showAccountModal"
+  [user]="user"
+  (close)="closeModal('account')"
+  (userUpdated)="handleUserUpdated($event)">
+</app-account-modal>
+
+<app-security-modal
+  *ngIf="showSecurityModal"
+  (close)="closeModal('security')">
+</app-security-modal>
+
+<app-address-modal
+  *ngIf="showAddressModal"
+  [user]="user"
+  (close)="closeModal('address')"
+  (userUpdated)="handleUserUpdated($event)">
+</app-address-modal>
+
+<app-footer></app-footer>

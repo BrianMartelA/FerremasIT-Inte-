@@ -1,0 +1,46 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <!-- ... código existente ... -->
+    <div class="modal-body">
+      <!-- Mensajes de error generales -->
+      <div *ngIf="errorMessages.non_field_errors" class="error-message">
+        {{ errorMessages.non_field_errors }}
+      </div>
+
+      <div class="form-group">
+        <label>Nombre</label>
+        <input type="text" [(ngModel)]="userData.first_name">
+        <div *ngIf="errorMessages.first_name" class="error-text">
+          {{ errorMessages.first_name }}
+        </div>
+      </div>
+
+      <!-- Añadir contenedores de error para cada campo -->
+      <div class="form-group">
+        <label>Apellido Paterno</label>
+        <input type="text" [(ngModel)]="userData.last_name">
+        <div *ngIf="errorMessages.last_name" class="error-text">
+          {{ errorMessages.last_name }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Apellido Materno</label>
+        <input type="text" [(ngModel)]="userData.second_last_name">
+        <div *ngIf="errorMessages.second_last_name" class="error-text">
+          {{ errorMessages.second_last_name }}
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Teléfono</label>
+        <input type="tel" [(ngModel)]="userData.phone">
+        <div *ngIf="errorMessages.phone" class="error-text">
+          {{ errorMessages.phone }}
+        </div>
+      </div>
+
+      <button (click)="onSave()">Guardar Cambios</button>
+    </div>
+  </div>
+</div>
