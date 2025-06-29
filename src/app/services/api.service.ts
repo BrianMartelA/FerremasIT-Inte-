@@ -198,9 +198,4 @@ getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observ
   };
   return this.http.get(`${this.baseUrl}/productos/por-categoria/`, { params });
   }
-
-  createPayPalPayment(): Observable<any> {
-  const headers = this.getAuthHeaders();  // Obtener headers con token
-  return this.http.post(`${this.baseUrl}/create-paypal-payment/`, {}, { headers });
-  }
 }
