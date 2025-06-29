@@ -9,8 +9,13 @@
         </div>
       </div>
       <div class="busqueda">
-        <input class="cont-buscar" type="text">
-        <div class="boton-buscar">
+        <input
+          class="cont-buscar"
+          type="text"
+          [(ngModel)]="terminoBusqueda"
+          (keyup.enter)="buscar()"
+        >
+        <div class="boton-buscar" (click)="buscar()">
           <span>Buscar</span>
         </div>
       </div>

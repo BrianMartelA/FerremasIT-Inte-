@@ -1,15 +1,14 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { tap, catchError } from 'rxjs/operators';
+import { throwError } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ApiService {
-
- private baseUrl = 'http://localhost:8000/api'; ///quite el /auth del final de la URL
-
+  private baseUrl = 'http://localhost:8000/api'; ///quite el /auth del final de la URL
 
   constructor(private http: HttpClient) {}
 
@@ -161,6 +160,44 @@ getProducts(page: number = 1, pageSize: number = 6, search: string = ''): Observ
       });
     }
     return new HttpHeaders();
+  }
+
+
+  searchProducts(query: string, page: number = 1, pageSize: number = 9): Observable<any> {
+  const params = {
+    q: query,
+    page: page.toString(),
+    page_size: pageSize.toString()
+  };
+  return this.http.get(`${this.baseUrl}/productos/search/`, { params }).pipe(
+    catchError(error => {
+      // Manejar errores específicos
+      let errorMessage = 'Error desconocido';
+      if (error.status === 404) {
+        errorMessage = 'No se encontraron productos';
+      } else if (error.status >= 500) {
+        errorMessage = 'Error del servidor. Intente más tarde';
+      }
+      return throwError(() => new Error(errorMessage));
+    })
+  );
+  }
+
+  getPaginatedProducts(page: number = 1, pageSize: number = 9): Observable<any> {
+  const params = {
+    page: page.toString(),
+    page_size: pageSize.toString()
+  };
+  return this.http.get(`${this.baseUrl}/productos/paginados/`, { params });
+  }
+
+  getProductsByCategory(category: string, page: number = 1, pageSize: number = 9): Observable<any> {
+  const params = {
+    categoria: category,
+    page: page.toString(),
+    page_size: pageSize.toString()
+  };
+  return this.http.get(`${this.baseUrl}/productos/por-categoria/`, { params });
   }
 
 getCurrentUser(): Observable<any> {

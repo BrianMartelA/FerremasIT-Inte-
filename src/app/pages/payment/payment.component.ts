@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { SharedModule } from '../../shared/shared.module';
 import { CarritoService } from '../../services/carrito.service';
 import { CommonModule } from '@angular/common';
+import { ApiService } from '../../services/api.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-payment',
@@ -15,7 +17,9 @@ export class PaymentComponent implements OnInit {
   total: number = 0;
   loading: boolean = true;
 
-  constructor(private carritoService: CarritoService) {}
+  constructor(
+    private carritoService: CarritoService,
+  ) {}
 
   ngOnInit(): void {
     this.carritoService.carrito$.subscribe(items => {
@@ -40,3 +44,4 @@ export class PaymentComponent implements OnInit {
     });
   }
 }
+

@@ -66,6 +66,8 @@
 .boton-container{
   display: flex;
   justify-content: center;
+  min-height: 100px;
+  margin-top: 16px;
 }
 .boton{
   background-color: #FEBA1B;

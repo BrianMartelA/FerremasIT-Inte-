@@ -39,8 +39,26 @@
         </div>
       </div>
     </div>
-    <div class="catalogo">
+    <div class="cata_pag">
+      <div class="catalogo">
+
       <div class="bento">
+        <!-- Spinner de carga -->
+        <div *ngIf="loading" class="spinner-container">
+          <div class="spinner"></div>
+          <p>Cargando productos...</p>
+        </div>
+        <div *ngIf="mostrarError()" class="error-message">
+          <i class="warning-icon">⚠️</i>
+          <span>{{ error }}</span>
+        </div>
+
+        <!-- Mensaje cuando no hay productos -->
+        <div *ngIf="!loading && productosFiltrados.length === 0" class="no-results">
+          <h3>No se encontraron productos</h3>
+          <p>Intenta con otros términos de búsqueda o categorías</p>
+        </div>
+
         <app-producto
           *ngFor="let producto of productosFiltrados"
           [imagenUrl]="producto.imagen_url"
@@ -49,6 +67,28 @@
           [producto]="producto"
           (clickProducto)="abrirModal($event)">
         </app-producto>
+      </div>
+    </div>
+      <div *ngIf="!loading && totalPages > 1" class="pagination">
+        <button (click)="cambiarPagina(1)" [disabled]="currentPage === 1">
+          &laquo; Primera
+        </button>
+
+        <button (click)="cambiarPagina(currentPage - 1)" [disabled]="currentPage === 1">
+          &lsaquo; Anterior
+        </button>
+
+        <span class="page-info">
+          Página {{ currentPage }} de {{ totalPages }}
+        </span>
+
+        <button (click)="cambiarPagina(currentPage + 1)" [disabled]="currentPage === totalPages">
+          Siguiente &rsaquo;
+        </button>
+
+        <button (click)="cambiarPagina(totalPages)" [disabled]="currentPage === totalPages">
+          Última &raquo;
+        </button>
       </div>
     </div>
   </div>
