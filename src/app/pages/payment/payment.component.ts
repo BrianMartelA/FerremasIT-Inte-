@@ -19,6 +19,8 @@ export class PaymentComponent implements OnInit {
 
   constructor(
     private carritoService: CarritoService,
+    private apiService: ApiService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -40,6 +42,26 @@ export class PaymentComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error eliminando producto', err);
+      }
+    });
+  }
+
+  realizarPago(): void {
+  if (this.carrito.length === 0) return;
+
+    this.apiService.procesarPago().subscribe({
+      next: (response) => {
+        console.log('Pago exitoso', response);
+        this.carritoService.actualizarCarrito();
+
+        // Redirigir con estado
+        this.router.navigate(['/confirmacion'], {
+          state: { ordenId: response.orden_id }
+        });
+      },
+      error: (err) => {
+        console.error('Error en el pago', err);
+        alert('Error: ' + (err.error?.error || 'Error desconocido'));
       }
     });
   }
