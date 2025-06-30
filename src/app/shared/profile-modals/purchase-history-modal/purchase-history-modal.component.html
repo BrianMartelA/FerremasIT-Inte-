@@ -1,0 +1,26 @@
+<div class="modal-backdrop" (click)="onClose()">
+  <div class="modal-content" (click)="$event.stopPropagation()">
+    <div class="modal-header">
+      <h3>Historial de Compras</h3>
+      <button class="close-btn" (click)="onClose()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <div *ngIf="orders.length === 0">
+        <p>No tienes compras registradas</p>
+      </div>
+
+      <div *ngFor="let order of orders" class="order-item">
+        <h3>Orden #{{ order.id }}</h3>
+        <p>Fecha: {{ order.fecha_creacion | date:'medium' }}</p>
+        <p>Total: ${{ order.total | number }}</p>
+
+        <div *ngFor="let item of order.items" class="order-product">
+          <p>{{ item.cantidad }} x {{ item.producto.nombre }}</p>
+          <p>${{ item.precio_unitario | number }} c/u</p>
+        </div>
+      </div>
+
+      <button (click)="onClose()">Cerrar</button>
+    </div>
+  </div>
+</div>

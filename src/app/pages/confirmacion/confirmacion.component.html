@@ -1,0 +1,20 @@
+<app-header></app-header>
+<section class="cuerpo centrar" style="padding: 2rem; text-align: center;">
+  <div class="container">
+    <div *ngIf="ordenId; else noOrden">
+    <h1>¡Pago Exitoso!</h1>
+    <p>Tu pedido #{{ordenId}} ha sido procesado correctamente.</p>
+    <p>Recibirás un correo con los detalles de tu compra.</p>
+  </div>
+
+  <ng-template #noOrden>
+    <h1>Confirmación</h1>
+    <p>No se encontró información de la orden.</p>
+  </ng-template>
+
+  <button class="boton" (click)="navigateToCatalogue()">
+    <span>Volver al Catalogo</span>
+  </button>
+  </div>
+</section>
+<app-footer></app-footer>

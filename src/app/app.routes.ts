@@ -6,6 +6,7 @@ import { CatalogueComponent } from './pages/catalogue/catalogue.component';
 import { PaymentComponent } from './pages/payment/payment.component';
 import { LoginComponent } from './pages/login/login.component';
 import { UsersComponent } from './pages/users/users.component';
+import { ConfirmacionComponent } from './pages/confirmacion/confirmacion.component';
 
 import { AdminGuard, AuthGuard } from './guards/auth.guard';
 
@@ -31,4 +32,5 @@ export const routes: Routes = [
     canActivate: [AuthGuard, AdminGuard] },
   {path:'profile', component:ProfileComponent},
   {path:'',redirectTo:'home', pathMatch:'full'},
+  { path: 'confirmacion', component: ConfirmacionComponent }
 ];

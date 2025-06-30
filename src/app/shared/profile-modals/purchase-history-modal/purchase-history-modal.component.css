@@ -1,0 +1,10 @@
+@import '../modal-styles.css';
+.order-item{
+  border-bottom: 1px solid #999;
+  margin-top: 16px;
+  margin-bottom: 16px;
+}
+.order-product{
+  display: flex;
+  justify-content: space-between;
+}

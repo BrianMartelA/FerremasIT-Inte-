@@ -8,6 +8,7 @@ import { PersonalInfoModalComponent } from '../../shared/profile-modals/personal
 import { SecurityModalComponent } from '../../shared/profile-modals/security-modal/security-modal.component';
 import { AccountModalComponent } from '../../shared/profile-modals/account-modal/account-modal.component';
 import { AddressModalComponent } from '../../shared/profile-modals/address-modal/address-modal.component';
+import { PurchaseHistoryModalComponent } from '../../shared/profile-modals/purchase-history-modal/purchase-history-modal.component';
 
 @Component({
   selector: 'app-profile',
@@ -19,7 +20,8 @@ import { AddressModalComponent } from '../../shared/profile-modals/address-modal
     PersonalInfoModalComponent,
     SecurityModalComponent,
     AccountModalComponent,
-    AddressModalComponent
+    AddressModalComponent,
+    PurchaseHistoryModalComponent
   ],
   templateUrl: './profile.component.html',
   styleUrls: ['./profile.component.css']
@@ -30,6 +32,8 @@ export class ProfileComponent implements OnInit {
   showAccountModal = false;
   showSecurityModal = false;
   showAddressModal = false;
+  orders: any[] = [];
+  showHistoryModal = false;
 
   constructor(
     private authService: AuthService,
@@ -38,6 +42,7 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadUserData();
+    this.loadOrderHistory();
   }
 
   loadUserData(): void {
@@ -60,6 +65,8 @@ export class ProfileComponent implements OnInit {
       this.showSecurityModal = true;
     } else if (type === 'address') {
       this.showAddressModal = true;
+    } else if (type === 'history') {
+      this.showHistoryModal = true;
     }
   }
 
@@ -72,6 +79,8 @@ export class ProfileComponent implements OnInit {
       this.showSecurityModal = false;
     } else if (type === 'address') {
       this.showAddressModal = false;
+    } else if (type === 'history') {
+      this.showHistoryModal = false;
     }
   }
 
@@ -84,16 +93,25 @@ export class ProfileComponent implements OnInit {
   //}
   handleUserUpdated(updatedUser: any): void {
   // Actualizar todos los campos del usuario
-  this.user = {
-    ...this.user,
-    ...updatedUser,
-    // Calcular nombre_completo si no viene del backend
-    nombre_completo: updatedUser.nombre_completo ||
-                     [updatedUser.first_name, updatedUser.last_name, updatedUser.second_last_name]
-                     .filter(Boolean).join(' ')
-  };
-}
+    this.user = {
+      ...this.user,
+      ...updatedUser,
+      // Calcular nombre_completo si no viene del backend
+      nombre_completo: updatedUser.nombre_completo ||
+                      [updatedUser.first_name, updatedUser.last_name, updatedUser.second_last_name]
+                      .filter(Boolean).join(' ')
+    };
+  }
 
-
+  loadOrderHistory(): void {
+    this.apiService.getOrderHistory().subscribe({
+      next: (data) => {
+        this.orders = data;
+      },
+      error: (error) => {
+        console.error('Error cargando historial', error);
+      }
+    });
+  }
 }
 

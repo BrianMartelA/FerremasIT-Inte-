@@ -44,7 +44,7 @@
         <span>${{ total | number }}</span>
       </div>
       <div class="boton-container">
-        <button class="boton" [disabled]="carrito.length === 0">
+        <button class="boton" [disabled]="carrito.length === 0" (click)="realizarPago()">
           <span>Pagar</span>
         </button>
       </div>

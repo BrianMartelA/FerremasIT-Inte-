@@ -24,6 +24,11 @@
     <h3>Direcciones</h3>
     <p>Domicilio: {{user?.address}}</p>
   </div>
+
+  <div class="profile-card" (click)="openModal('history')">
+    <h3>Historial de Compras</h3>
+    <p>Ver tus pedidos anteriores</p>
+  </div>
 </div>
 
 <!-- Modales con manejo de actualización -->
@@ -52,5 +57,11 @@
   (close)="closeModal('address')"
   (userUpdated)="handleUserUpdated($event)">
 </app-address-modal>
+
+<app-purchase-history-modal
+  *ngIf="showHistoryModal"
+  [orders]="orders"
+  (close)="closeModal('history')"> <!-- Usar close en lugar de close.emit -->
+</app-purchase-history-modal>
 
 <app-footer></app-footer>
