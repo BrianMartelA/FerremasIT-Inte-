@@ -45,7 +45,6 @@
 }
 
 .social-icons img {
-  width: 24px;
-  height: 24px;
-  filter: brightness(0) invert(1); /* Blanco en fondo negro */
+  width: 42px;
+  height: 42px;
 }
